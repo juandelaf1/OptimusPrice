@@ -1,7 +1,6 @@
 __pycache__/
 *.pyc
 *.pyo
-*.pkl
 raspal_cache.sqlite
 venv/
 .env

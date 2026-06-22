@@ -28,10 +28,12 @@ class EnhancedOptimusPrice:
         self.market_cache = {}
         self._model_pipeline = None
         self._model_name = None
+        self._feature_names = None
 
     def load_model(self, model_path: str = None) -> bool:
         """Load a trained model pipeline"""
         import joblib
+        import pandas as pd
         if model_path is None:
             models = [f for f in os.listdir(MODEL_DIR) if f.endswith(".pkl")] if os.path.exists(MODEL_DIR) else []
             if not models:
@@ -42,11 +44,60 @@ class EnhancedOptimusPrice:
         try:
             self._model_pipeline = joblib.load(model_path)
             self._model_name = os.path.basename(model_path)
-            print(f"Loaded model: {self._model_name}")
+            if hasattr(self._model_pipeline, 'feature_names_in_'):
+                self._feature_names = list(self._model_pipeline.feature_names_in_)
+            else:
+                last_step = self._model_pipeline.steps[-1][1] if hasattr(self._model_pipeline, 'steps') else self._model_pipeline
+                if hasattr(last_step, 'feature_names_in_'):
+                    self._feature_names = list(last_step.feature_names_in_)
+            print(f"Loaded model: {self._model_name} ({len(self._feature_names or [])} features)")
             return True
         except Exception as e:
             print(f"Error loading model: {e}")
             return False
+
+    def _build_full_features(self, features: Dict) -> Dict:
+        """Build complete feature vector expected by the model"""
+        import pandas as pd
+        import numpy as np
+
+        if self._feature_names is None:
+            return features
+
+        full = {}
+        for col in self._feature_names:
+            if col in features:
+                full[col] = features[col]
+            elif col == "total_guests":
+                full[col] = features.get("total_guests", 2)
+            elif col == "total_nights":
+                full[col] = features.get("total_nights", 1)
+            elif col == "lead_time":
+                full[col] = features.get("lead_time", 30)
+            elif col == "arrival_year":
+                full[col] = 2025
+            elif col == "arrival_month":
+                full[col] = features.get("arrival_month", 7)
+            elif col == "arrival_date":
+                full[col] = 15
+            elif col == "arrival_day_of_week":
+                full[col] = 3
+            elif col == "arrival_week_number":
+                full[col] = 28
+            elif col in ("required_car_parking_space", "repeated_guest", "no_of_previous_cancellations",
+                         "no_of_previous_bookings_not_canceled", "no_of_special_requests"):
+                full[col] = 0
+            elif col == "booking_status_Not_Canceled":
+                full[col] = 1
+            elif col in ("type_of_meal_plan_Meal Plan 2", "type_of_meal_plan_Not Selected"):
+                full[col] = 1 if col == "type_of_meal_plan_Not Selected" else 0
+            elif col.startswith("room_type_reserved_"):
+                full[col] = 1 if col == "room_type_reserved_Room_Type 4" else 0
+            elif col.startswith("market_segment_type_"):
+                full[col] = 1 if col == "market_segment_type_Online" else 0
+            else:
+                full[col] = 0
+        return full
 
     def predict(self, features: Dict) -> float:
         """Make a price prediction using the loaded model"""
@@ -54,7 +105,8 @@ class EnhancedOptimusPrice:
         if self._model_pipeline is None:
             return self._fallback_prediction(features)
 
-        df = pd.DataFrame([features])
+        full_features = self._build_full_features(features)
+        df = pd.DataFrame([full_features])
         try:
             prediction = self._model_pipeline.predict(df)[0]
             return float(prediction)

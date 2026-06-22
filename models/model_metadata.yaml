@@ -1,0 +1,9 @@
+RandomForest:
+  file: pipeline_randomforest_20260622_134030.pkl
+  metrics:
+    mae: 6.8675219337814655
+    mape: 7.171589463789804
+    r2: 0.8348647455646178
+    rmse: 11.264548935351119
+  model: RandomForest
+  timestamp: '20260622_134030'
