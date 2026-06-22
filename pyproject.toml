@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "optimus-price"
+version = "1.0.0"
+description = "Intelligent Hotel Pricing Recommendation System"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+authors = [
+    {name = "Juan de la Fuente", email = "juandelafuentelarrocca@gmail.com"}
+]
+dependencies = [
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "scikit-learn>=1.2.0",
+    "streamlit>=1.25.0",
+    "matplotlib>=3.7.0",
+    "plotly>=5.16.0",
+    "kagglehub>=0.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=23.0",
+    "ruff>=0.1.0",
+]
+train = [
+    "optuna>=3.0",
+]
+all = ["optimus-price[dev,train]"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["optimus_price*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
