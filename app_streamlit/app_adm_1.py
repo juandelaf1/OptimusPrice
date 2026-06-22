@@ -11,9 +11,10 @@ import pandas as pd
 import os, sys, json
 from datetime import datetime, date
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-BASE_DIR = os.path.dirname(__file__)
-PIPELINE_FILE = os.path.join(BASE_DIR, "..", "models", "pipeline_trained_model.pkl")
+APP_DIR = os.path.dirname(__file__)
+sys.path.insert(0, os.path.join(APP_DIR, ".."))
+sys.path.insert(0, APP_DIR)
+PIPELINE_FILE = os.path.join(APP_DIR, "..", "models", "pipeline_trained_model.pkl")
 
 from optimus_db import db
 from shared_utils import build_input_data, build_input_mod

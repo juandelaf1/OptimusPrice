@@ -12,7 +12,7 @@ from datetime import datetime
 from typing import Dict, List, Optional, Any
 from contextlib import contextmanager
 
-DB_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
+DB_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
 DB_PATH = os.path.join(DB_DIR, "optimus_price.db")
 
 

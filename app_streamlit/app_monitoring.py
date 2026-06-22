@@ -10,7 +10,9 @@ import sys, os, json, glob
 from datetime import datetime, timedelta
 import pandas as pd
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+APP_DIR = os.path.dirname(__file__)
+sys.path.insert(0, os.path.join(APP_DIR, ".."))
+sys.path.insert(0, APP_DIR)
 from enhanced_optimus import EnhancedOptimusPrice
 from monitoring_service import MonitoringService, MONITOR_DIR, ALERTS_DIR, REPORTS_DIR
 
