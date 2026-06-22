@@ -1,0 +1,21 @@
+url: "https://www.booking.com/hotel/price/{hotel_id}"
+engine: stealth
+cache_ttl: 1800
+timeout: 30
+extract:
+  text: true
+  metadata: true
+  use_selectolax: true
+llm:
+  model: "llama3.2"
+  template: "hotel_pricing"
+  output_schema:
+    price: 0
+    currency: "EUR"
+    hotel_name: ""
+    rating: 0
+    availability: "available"
+throttle:
+  min_delay: 3
+  max_delay: 15
+  target_avg: 8

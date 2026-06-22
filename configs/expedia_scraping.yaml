@@ -1,0 +1,29 @@
+url: "https://www.expedia.com/hotel/{hotel_id}"
+engine: stealth
+cache_ttl: 1800
+timeout: 30
+extract:
+  text: true
+  metadata: true
+  selectors:
+    hotel_name: "h1.p-name"
+    price: "span.price"
+    rating: "span.rating"
+    reviews_count: "span.review-count"
+    availability: "div.rooms-availability"
+  use_selectolax: true
+llm:
+  model: "llama3.2"
+  template: "hotel_pricing"
+  output_schema:
+    price: 0
+    currency: "USD"
+    hotel_name: ""
+    rating: 0
+    availability: "available"
+    room_type: ""
+    cancellation_policy: ""
+throttle:
+  min_delay: 3
+  max_delay: 15
+  target_avg: 8

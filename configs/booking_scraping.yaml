@@ -1,0 +1,29 @@
+url: "https://www.booking.com/hotel/price/{hotel_id}"
+engine: stealth
+cache_ttl: 1800
+timeout: 30
+extract:
+  text: true
+  metadata: true
+  selectors:
+    hotel_name: "h2.hp__hotel-name"
+    price: "span.prco-valign-middle-helper-text"
+    rating: "span.average"
+    reviews_count: "span.review-score-widget__text"
+    availability: "div#availability"
+  use_selectolax: true
+llm:
+  model: "llama3.2"
+  template: "hotel_pricing"
+  output_schema:
+    price: 0
+    currency: "EUR"
+    hotel_name: ""
+    rating: 0
+    availability: "available"
+    room_type: ""
+    cancellation_policy: ""
+throttle:
+  min_delay: 3
+  max_delay: 15
+  target_avg: 8

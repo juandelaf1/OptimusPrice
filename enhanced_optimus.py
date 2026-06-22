@@ -8,6 +8,7 @@ import sys
 sys.path.insert(0, r"C:\Users\JUAN\Desktop\Proyectos\Optimus_Price_Final")
 
 from raspal import Fetcher, LLMExtractor, AutoThrottle
+from scraping_manager import ScrapingManager
 from src.optimus_price.training import (
     load_processed_data, train_best_and_save, build_pipeline,
     evaluate_model, select_best_model, train_all_models
@@ -25,6 +26,7 @@ class EnhancedOptimusPrice:
 
     def __init__(self):
         self.raspal_fetcher = Fetcher(throttle=AutoThrottle(min_delay=1, max_delay=60))
+        self.scraper = ScrapingManager()
         self.market_cache = {}
         self._model_pipeline = None
         self._model_name = None
@@ -203,6 +205,35 @@ class EnhancedOptimusPrice:
             return internal_prediction * 1.05
         else:
             return internal_prediction
+
+    def scrape_and_predict(self, hotel_id: str, scrape_otas: bool = True) -> Dict:
+        """Scrape hotel prices from OTAs and return optimized prediction"""
+        base_features = {"hotel_id": hotel_id, "total_guests": 2, "total_nights": 1}
+        base_price = self.predict_with_market_context(base_features)
+
+        if not scrape_otas:
+            return {"hotel_id": hotel_id, "predicted_price": base_price}
+
+        otas_results = self.scraper.scrape_hotel(hotel_id)
+        competitor_prices = {}
+        for ota, data in otas_results.items():
+            parsed = data.get("parsed", {})
+            price = parsed.get("price") if isinstance(parsed, dict) else None
+            if price:
+                competitor_prices[ota] = float(price)
+
+        optimized = self.optimize_price_with_market_data({
+            "internal_prediction": base_price,
+            "competitor_prices": competitor_prices
+        })
+
+        return {
+            "hotel_id": hotel_id,
+            "base_price": base_price,
+            "optimized_price": optimized,
+            "competitor_prices": competitor_prices,
+            "market_adjustment": optimized - base_price
+        }
 
 
 def create_enhanced_system():
