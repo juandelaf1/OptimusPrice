@@ -1,0 +1,7 @@
+timestamp,nombre_cliente,email,telefono,documento,nacionalidad,tipo_cliente,fecha_llegada,fecha_salida,noches,tipo_habitacion,huespedes,plan_comidas,solicitudes_especiales,estacionamiento,metodo_pago,precio_noche,precio_total,lead_time,temporada
+2025-05-08 17:16:53,subt@hotmail.com,6456666747,722702216,543555566,Española,Normal,2025-05-08,2025-05-08,0,Individual,2,Ninguno,,False,Efectivo,89.16,0.0,0,Media
+2025-05-08 18:27:10,subt@hotmail.com,6456666747,722702216,543555566,Española,Normal,2025-05-20,2025-05-22,2,Individual,5,Desayuno incluido,,False,Efectivo,129.16,258.32,12,Media
+2025-05-09 13:10:32,juan,siubet@ hotmail.com,722702216,3646475859,Española,VIP,2025-05-24,2025-05-29,5,Individual,2,Ninguno,,False,Efectivo,92.75,463.75,15,Media
+2025-05-15 21:20:46,juan,subt@hotmail.com,722702216,23876456s,Española,Normal,2025-06-05,2025-06-12,7,Twin,2,Desayuno incluido,,False,Efectivo,105.08,735.58,21,Alta
+2025-05-15 21:27:12,juan,subt@hotmail.com,722702216,23876456s,Española,Normal,2025-10-10,2025-10-17,7,Individual,2,Ninguno,,False,Tarjeta Crédito,89.08,623.53,148,Media
+2025-05-15 21:48:06,juan,subt@hotmail.com,722702216,23876456s,Española,Normal,2025-05-31,2025-06-08,8,Individual,2,Desayuno incluido,,False,Efectivo,125.0,1000.02,16,Media

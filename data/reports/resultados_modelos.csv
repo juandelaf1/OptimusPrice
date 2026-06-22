@@ -1,0 +1,8 @@
+rmse,mae,r2,Tipo,score
+24.675,17.891,0.500,Supervisado,
+19.864,8.849,0.676,Supervisado,
+15.199,7.515,0.810,Supervisado,
+15.771,9.452,0.796,Supervisado,
+14.617,8.026,0.825,Supervisado,
+,,,No Supervisado,0.591
+,,,No Supervisado,-0.551
