@@ -166,7 +166,7 @@ def save_model(pipeline: Pipeline, name: str, metrics: dict, model_dir: str | No
         os.remove(latest_path)
     joblib.dump(pipeline, latest_path)
     print(f"Modelo guardado: {path}")
-    print(f"  → También como: {latest_path}")
+    print(f"  Tambien como: {latest_path}")
     return path
 
 

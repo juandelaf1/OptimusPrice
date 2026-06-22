@@ -1,0 +1,11 @@
+model_name: pipeline_gradientboosting_20260622_140404
+algorithm: GradientBoosting
+training_date: 2026-06-22
+features_count: 41
+competitor_features: 15
+rmse: 0.38
+r2_score: 0.9998
+mae: 0.27
+data_source: hotel_reservations_enriched.csv
+phase: "2 - Enhanced with competitor features"
+status: production
