@@ -1,0 +1,24 @@
+2026-06-22 14:19:50,962 [INFO] Added hotel test-hotel-001 to monitoring
+2026-06-22 14:19:50,963 [INFO] Added hotel test-hotel-002 to monitoring
+2026-06-22 14:19:50,963 [INFO] === Monitoring cycle: 2 hotels ===
+2026-06-22 14:19:50,963 [INFO] Checking prices for test-hotel-001
+2026-06-22 14:19:58,552 [ERROR] No Cloudflare challenge found.
+2026-06-22 14:19:58,647 [INFO] Fetched (404) <GET https://www.booking.com/hotel/price/test-hotel-001?chal_t=1782130884365&force_referer=https%3A%2F%2Fwww.google.com%2F> (referer: https://www.google.com/)
+2026-06-22 14:20:03,233 [ERROR] No Cloudflare challenge found.
+2026-06-22 14:20:03,282 [INFO] Fetched (404) <GET https://www.expedia.com/hotel/test-hotel-001> (referer: https://www.google.com/)
+2026-06-22 14:20:10,033 [ERROR] No Cloudflare challenge found.
+2026-06-22 14:20:10,057 [INFO] Fetched (302) <GET https://www.hotels.com/hotel/test-hotel-001> (referer: https://www.google.com/)
+2026-06-22 14:20:10,074 [INFO] Fetched (404) <GET https://es.hoteles.com/hotel/test-hotel-001?locale=es_ES&siteid=300000008> (referer: https://www.google.com/)
+2026-06-22 14:20:16,031 [ERROR] No Cloudflare challenge found.
+2026-06-22 14:20:16,059 [INFO] Fetched (404) <GET https://www.trivago.es/hotel/test-hotel-001> (referer: https://www.google.com/)
+2026-06-22 14:20:16,397 [INFO] Checking prices for test-hotel-002
+2026-06-22 14:20:20,972 [ERROR] No Cloudflare challenge found.
+2026-06-22 14:20:21,042 [INFO] Fetched (404) <GET https://www.booking.com/hotel/price/test-hotel-002?chal_t=1782130910630&force_referer=https%3A%2F%2Fwww.google.com%2F> (referer: https://www.google.com/)
+2026-06-22 14:20:26,194 [ERROR] No Cloudflare challenge found.
+2026-06-22 14:20:26,244 [INFO] Fetched (404) <GET https://www.expedia.com/hotel/test-hotel-002> (referer: https://www.google.com/)
+2026-06-22 14:20:32,999 [ERROR] No Cloudflare challenge found.
+2026-06-22 14:20:33,032 [INFO] Fetched (302) <GET https://www.hotels.com/hotel/test-hotel-002> (referer: https://www.google.com/)
+2026-06-22 14:20:33,060 [INFO] Fetched (404) <GET https://es.hoteles.com/hotel/test-hotel-002?locale=es_ES&siteid=300000008> (referer: https://www.google.com/)
+2026-06-22 14:20:39,517 [ERROR] No Cloudflare challenge found.
+2026-06-22 14:20:39,549 [INFO] Fetched (404) <GET https://www.trivago.es/hotel/test-hotel-002> (referer: https://www.google.com/)
+2026-06-22 14:20:39,926 [INFO] Cycle complete: 0 critical, 0 high alerts

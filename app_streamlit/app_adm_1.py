@@ -1,318 +1,229 @@
+# -*- coding: utf-8 -*-
+"""
+Optimus Price — Admin Dashboard
+Connected platform: DB-backed, shows customer activity + competitor intel
+"""
+
 import streamlit as st
 import joblib
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+import os, sys, json
 from datetime import datetime, date
-import os
-import csv
 
-st.set_page_config(page_title="Optimus Price Advisor", layout="centered")
-page_bg_gradient = """
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+BASE_DIR = os.path.dirname(__file__)
+PIPELINE_FILE = os.path.join(BASE_DIR, "..", "models", "pipeline_trained_model.pkl")
+
+from optimus_db import db
+from shared_utils import build_input_data, build_input_mod
+from monitoring_service import MonitoringService, ALERTS_DIR
+
+st.set_page_config(page_title="Optimus Price — Admin", layout="wide", page_icon="▌")
+
+DARK_BG = "#0F1720"
+SAGE = "#A3B18A"
+TEXT_SEC = "#B0B8C5"
+TEXT_MUTED = "#7C8595"
+BORDER = "#242D3D"
+
+page_style = f"""
 <style>
-.stApp {
-    background: linear-gradient(to bottom, #E0E0E0, #A9A9A9);
-}
+    .stApp {{ background: {DARK_BG}; }}
+    .block-container {{ padding: 2rem 3rem; max-width: 1400px; }}
+    h1,h2,h3,h4,h5,h6,p,li,span {{ font-family: -apple-system, 'Inter', 'SF Pro', sans-serif; }}
+    h1 {{ color: white; font-size: 1.75rem; font-weight: 600; letter-spacing: -0.02em; }}
+    h2 {{ color: white; font-size: 1.25rem; font-weight: 500; }}
+    p {{ color: {TEXT_SEC}; font-size: 0.9rem; }}
+    div[data-testid="stMetricValue"] {{ font-size: 2rem !important; font-weight: 600 !important; color: white !important; }}
+    div[data-testid="metric-container"] {{ background: #111827; border: 1px solid {BORDER}; border-radius: 12px; padding: 1.25rem; }}
+    .stButton button {{ background: white; color: {DARK_BG}; border-radius: 12px; font-weight: 500; border: none; }}
+    .stButton button:hover {{ background: {SAGE}; color: {DARK_BG}; }}
+    .stTabs [data-baseweb="tab-list"] {{ gap: 2rem; border-bottom: 1px solid {BORDER}; }}
+    .stTabs [data-baseweb="tab"] {{ color: {TEXT_MUTED}; }}
+    .stTabs [aria-selected="true"] {{ color: {SAGE} !important; }}
+    hr {{ border-color: {BORDER}; margin: 1.5rem 0; }}
+    .card {{ background: #111827; border: 1px solid {BORDER}; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }}
+    .badge {{ display: inline-block; padding: 0.15rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 500; }}
+    .badge-green {{ background: {SAGE}22; color: {SAGE}; }}
+    .badge-gray {{ background: {BORDER}; color: {TEXT_MUTED}; }}
 </style>
 """
-st.markdown(page_bg_gradient, unsafe_allow_html=True)
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_FILE = os.path.join(BASE_DIR, "hotel_reservations.csv")
-PIPELINE_FILE = os.path.join(BASE_DIR, "..", "models", "pipeline_trained_model.pkl")
-OVERRIDE_FILE = os.path.join(BASE_DIR, "price_override.txt")
-
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
-
-def save_to_csv(data):
-    file_exists = os.path.isfile(DATA_FILE)
-    with open(DATA_FILE, mode="a", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=data.keys())
-        if not file_exists:
-            writer.writeheader()
-        writer.writerow(data)
-
-def build_input_data(required_car_parking, lead_time, fecha_llegada,
-                     repeated_guest, special_requests_count, meal_plan, room_type,
-                     total_guests, total_nights):
-    arrival_year = fecha_llegada.year
-    arrival_month = fecha_llegada.month
-    arrival_date = fecha_llegada.day
-    arrival_day_of_week = fecha_llegada.weekday()
-    arrival_week_number = fecha_llegada.isocalendar()[1]
-    no_prev_cancel = 0
-    no_prev_bookings = 0
-    meal_plan_2 = int(meal_plan in ["Desayuno incluido", "Cena incluida", "Todo incluido"])
-    meal_not_selected = int(meal_plan == "Ninguno")
-    rt2 = int(room_type == "Individual")
-    rt3 = int(room_type == "Doble")
-    rt4 = int(room_type == "Twin")
-    rt5 = int(room_type == "Triple")
-    rt6 = int(room_type == "Suite")
-    rt7 = int(room_type == "Familiar")
-    ms_compl = 0
-    ms_corp = 0
-    ms_off = 0
-    ms_onl = 0
-    booking_not_canceled = 1
-    data = np.array([[
-        int(required_car_parking),
-        lead_time,
-        arrival_year,
-        arrival_month,
-        arrival_date,
-        int(repeated_guest),
-        no_prev_cancel,
-        no_prev_bookings,
-        special_requests_count,
-        meal_plan_2,
-        meal_not_selected,
-        rt2,
-        rt3,
-        rt4,
-        rt5,
-        rt6,
-        rt7,
-        ms_compl,
-        ms_corp,
-        ms_off,
-        ms_onl,
-        booking_not_canceled,
-        total_guests,
-        total_nights,
-        arrival_day_of_week,
-        arrival_week_number
-    ]])
-    return data
-
-def build_input_mod(required_car_parking_mod, lead_time_mod, mes_mod, special_requests_mod,
-                    meal_plan_mod, room_type_mod, total_guests_mod, total_nights_mod, fecha_ref):
-    try:
-        fecha_mod = fecha_ref.replace(month=mes_mod)
-    except ValueError:
-        fecha_mod = fecha_ref.replace(month=mes_mod, day=28)
-    arrival_year_mod = fecha_mod.year
-    arrival_date_mod = fecha_mod.day
-    arrival_day_of_week_mod = fecha_mod.weekday()
-    arrival_week_number_mod = fecha_mod.isocalendar()[1]
-    m_plan2 = int(meal_plan_mod in ["Desayuno incluido", "Cena incluida", "Todo incluido"])
-    m_not_selected = int(meal_plan_mod == "Ninguno")
-    rt2_mod = int(room_type_mod == "Individual")
-    rt3_mod = int(room_type_mod == "Doble")
-    rt4_mod = int(room_type_mod == "Twin")
-    rt5_mod = int(room_type_mod == "Triple")
-    rt6_mod = int(room_type_mod == "Suite")
-    rt7_mod = int(room_type_mod == "Familiar")
-    ms_compl_mod = 0
-    ms_corp_mod = 0
-    ms_off_mod = 0
-    ms_onl_mod = 0
-    booking_not_canceled_mod = 1
-    data_mod = np.array([[
-        int(required_car_parking_mod),
-        lead_time_mod,
-        arrival_year_mod,
-        mes_mod,
-        arrival_date_mod,
-        0,
-        0,
-        0,
-        special_requests_mod,
-        m_plan2,
-        m_not_selected,
-        rt2_mod,
-        rt3_mod,
-        rt4_mod,
-        rt5_mod,
-        rt6_mod,
-        rt7_mod,
-        ms_compl_mod,
-        ms_corp_mod,
-        ms_off_mod,
-        ms_onl_mod,
-        booking_not_canceled_mod,
-        total_guests_mod,
-        total_nights_mod,
-        arrival_day_of_week_mod,
-        arrival_week_number_mod
-    ]])
-    return data_mod
-
-role = st.sidebar.selectbox("Selecciona el rol", ["Cliente", "Administrador"])
-show_admin = False
-if role == "Administrador":
-    admin_password = st.sidebar.text_input("Contraseña de Administrador", type="password")
-    if admin_password:
-        if admin_password == ADMIN_PASSWORD:
-            st.sidebar.success("Acceso de administrador concedido")
-            show_admin = True
-        else:
-            st.sidebar.error("Contraseña incorrecta.")
-
-page = st.sidebar.selectbox("Seleccione la Página", ["Reservas", "Recomendaciones"])
-
-if show_admin:
-    st.sidebar.markdown("### Configuración de Precio Manual")
-    manual_modifier = st.sidebar.slider("Ajuste manual de precio (%)", -20, 30, 0, step=1)
-    if st.sidebar.button("Guardar Ajuste Manual"):
-        with open(OVERRIDE_FILE, "w") as f:
-            f.write(str(manual_modifier))
-        st.sidebar.success("Ajuste manual guardado.")
-    st.sidebar.markdown("---")
-    st.sidebar.markdown("### Historial de Reservas")
-    if os.path.exists(DATA_FILE):
-        hist = pd.read_csv(DATA_FILE)
-        st.sidebar.dataframe(hist.tail(5))
-        csv_hist = hist.to_csv(index=False).encode('utf-8')
-        st.sidebar.download_button("Descargar historial", data=csv_hist, file_name="historial_reservas.csv", mime="text/csv")
-    else:
-        st.sidebar.info("No hay reservas aún.")
+st.markdown(page_style, unsafe_allow_html=True)
 
 try:
     pipeline = joblib.load(PIPELINE_FILE)
 except FileNotFoundError:
-    st.error(f"Error: Pipeline del modelo no encontrado en {PIPELINE_FILE}")
+    st.error(f"Model not found: {PIPELINE_FILE}")
     st.stop()
 
-logo_path = os.path.join(BASE_DIR, "..", "docs", "img", "optimus_price_logo.jpg")
-if os.path.exists(logo_path):
-    st.image(logo_path, use_container_width=True)
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
 
-st.title("Optimus Price Advisor")
-st.markdown("##### Complete los datos de la reserva para analizar estrategias de precios:")
+# ---- Auth ----
+st.sidebar.markdown("""<div style="font-size:1.5rem;font-weight:700;color:white;">▌ Optimus Price</div>""", unsafe_allow_html=True)
+st.sidebar.markdown(f"<p style='color:{TEXT_MUTED};font-size:0.8rem'>Admin Dashboard</p>", unsafe_allow_html=True)
+st.sidebar.markdown("<hr>", unsafe_allow_html=True)
 
-if page == "Reservas":
-    st.header("Formulario de Reserva")
-    col_pers1, col_pers2 = st.columns(2)
-    with col_pers1:
-        nombre = st.text_input("Nombre completo*", help="Nombre y apellidos")
-        email = st.text_input("Email*", help="Email de contacto")
-        telefono = st.text_input("Teléfono*", help="Número de contacto")
-    with col_pers2:
-        documento = st.text_input("Documento de identidad*", help="DNI, pasaporte u otra identificación")
-        nacionalidad = st.text_input("Nacionalidad", "Española")
-        vip_status = st.selectbox("Tipo de cliente", ["Normal", "VIP", "Corporativo"])
+role = st.sidebar.selectbox("Role", ["Administrador", "Cliente"])
+show_admin = False
+if role == "Administrador":
+    pwd = st.sidebar.text_input("Password", type="password")
+    if pwd == ADMIN_PASSWORD:
+        show_admin = True
+        st.sidebar.markdown(f"<span class='badge badge-green'>Access Granted</span>", unsafe_allow_html=True)
+    elif pwd:
+        st.sidebar.error("Incorrect password")
 
-    st.header("Detalles de la Reserva")
-    today = date.today()
-    col_fechas1, col_fechas2 = st.columns(2)
-    with col_fechas1:
-        fecha_llegada = st.date_input("Fecha de llegada*", min_value=datetime(2025,1,1), max_value=datetime(2027,12,31))
-    with col_fechas2:
-        fecha_salida = st.date_input("Fecha de salida*", min_value=fecha_llegada)
-    lead_time = (fecha_llegada - today).days
-    total_nights = (fecha_salida - fecha_llegada).days
-    st.info(f"""Resumen:
-- Anticipacion: {lead_time} dias
-- Duracion: {total_nights} noches
-- Temporada: {"Alta" if fecha_llegada.month in [6,7,8,12] else "Media" if fecha_llegada.month in [4,5,9,10,11] else "Baja"}""")
+page = st.sidebar.selectbox("Module", ["Dashboard", "Reservations", "Simulator", "Market Monitor"])
 
-    st.header("Preferencias de Hospedaje")
-    col_pref1, col_pref2 = st.columns(2)
-    with col_pref1:
-        st.markdown("**Servicios:**")
-        meal_2 = st.radio("Plan de comidas*", ['Ninguno', 'Desayuno incluido', 'Cena incluida', 'Todo incluido'])
-        special_requests = st.text_area("Solicitudes especiales")
-    with col_pref2:
-        st.markdown("**Habitacion:**")
-        room_type = st.selectbox("Tipo de habitacion*", ['Predeterminado', 'Individual', 'Doble', 'Twin', 'Triple', 'Suite', 'Familiar'])
-        total_guests = st.number_input("Numero de huespedes*", min_value=1, max_value=10, value=2)
-        required_car_parking = st.checkbox("Requiere estacionamiento")
+if show_admin:
+    st.sidebar.markdown("<hr>", unsafe_allow_html=True)
+    st.sidebar.markdown("<p style='color:" + TEXT_MUTED + ";font-size:0.8rem'>Admin Tools</p>", unsafe_allow_html=True)
+    override_val = st.sidebar.slider("Price Override (%)", -20, 30, 0, step=1)
+    if st.sidebar.button("Save Override"):
+        db.save_override(override_val, "Manual override from dashboard")
+        st.sidebar.success(f"Override set to {override_val}%")
 
-    input_data = build_input_data(required_car_parking, lead_time, fecha_llegada,
-                                  repeated_guest=0,
-                                  special_requests_count=len([r for r in special_requests.split(",") if r.strip()]) if special_requests else 0,
-                                  meal_plan=meal_2,
-                                  room_type=room_type,
-                                  total_guests=total_guests,
-                                  total_nights=total_nights)
+st.markdown(f"""<div style="display:flex;justify-content:space-between;align-items:center">
+    <h1>Optimus Price</h1>
+    <p style="color:{TEXT_MUTED};font-size:0.8rem">{datetime.now():%Y-%m-%d %H:%M}</p>
+</div>""", unsafe_allow_html=True)
 
-    try:
-        prediccion_base = pipeline.predict(input_data)[0]
-        override_modifier = 0
-        if os.path.exists(OVERRIDE_FILE):
-            with open(OVERRIDE_FILE, "r") as f:
-                try:
-                    override_modifier = float(f.read().strip())
-                except Exception:
-                    override_modifier = 0
-        precio_ajustado = prediccion_base * (1 + override_modifier/100)
-        st.markdown("### Precio Sugerido")
-        st.success(f"Precio por noche sugerido: ${precio_ajustado:.2f} USD")
-    except Exception as e:
-        st.error(f"Error en la prediccion: {e}")
+if page == "Dashboard":
+    col1, col2, col3, col4 = st.columns(4)
+    rstats = db.get_reservation_stats()
+    qstats = db.get_query_stats()
 
-    if st.button("Confirmar Reserva y Calcular Precio", type="primary"):
-        mandatory_fields = {
-            "Nombre": nombre,
-            "Email": email,
-            "Telefono": telefono,
-            "Documento": documento,
-            "Fechas": fecha_llegada and fecha_salida
-        }
-        missing_fields = [k for k, v in mandatory_fields.items() if not v]
-        if missing_fields:
-            st.error(f"Faltan campos obligatorios: {', '.join(missing_fields)}")
+    with col1:
+        st.markdown(f"""<div class="card" style="text-align:center"><p style="color:{TEXT_MUTED};font-size:0.8rem">Total Reservations</p><p style="color:white;font-size:2rem;font-weight:700">{rstats['total_reservations']}</p></div>""", unsafe_allow_html=True)
+    with col2:
+        st.markdown(f"""<div class="card" style="text-align:center"><p style="color:{TEXT_MUTED};font-size:0.8rem">Revenue</p><p style="color:{SAGE};font-size:2rem;font-weight:700">€{rstats['total_revenue']:,.0f}</p></div>""", unsafe_allow_html=True)
+    with col3:
+        st.markdown(f"""<div class="card" style="text-align:center"><p style="color:{TEXT_MUTED};font-size:0.8rem">Queries Today</p><p style="color:white;font-size:2rem;font-weight:700">{qstats['queries_today']}</p></div>""", unsafe_allow_html=True)
+    with col4:
+        st.markdown(f"""<div class="card" style="text-align:center"><p style="color:{TEXT_MUTED};font-size:0.8rem">Avg Price/Night</p><p style="color:white;font-size:2rem;font-weight:700">€{rstats['avg_price_per_night']:.0f}</p></div>""", unsafe_allow_html=True)
+
+    st.markdown("<h2>Recent Customer Activity</h2>", unsafe_allow_html=True)
+    queries = db.get_queries(limit=10)
+    if queries:
+        for q in queries:
+            st.markdown(f"""<div class="card" style="padding:0.75rem 1rem;display:flex;justify-content:space-between">
+                <div><span style="color:white">{q.get('source','portal')}</span>
+                <span style="color:{TEXT_MUTED};margin-left:0.5rem">{q.get('total_guests','?')} guests · {q.get('total_nights','?')} nights</span></div>
+                <div><span style="color:{SAGE};font-weight:600">€{q.get('final_price',0):.0f}</span>
+                <span style="color:{TEXT_MUTED};margin-left:0.5rem;font-size:0.8rem">{q.get('created_at','')[:19]}</span></div>
+            </div>""", unsafe_allow_html=True)
+    else:
+        st.markdown(f"<p style='color:{TEXT_MUTED}'>No queries yet. Customer portal will feed data here.</p>", unsafe_allow_html=True)
+
+    if show_admin:
+        st.markdown("<h2>Active Override</h2>", unsafe_allow_html=True)
+        override = db.get_active_override()
+        if override:
+            st.markdown(f"""<div class="card"><p>{override['admin_user']} set <b>{override['modifier_percent']:+.0f}%</b> on {override['created_at'][:19]}</p></div>""", unsafe_allow_html=True)
         else:
-            total_price = precio_ajustado * total_nights
-            st.success(f"Total a pagar ({total_nights} noches): ${total_price:.2f}")
+            st.markdown(f"<p style='color:{TEXT_MUTED}'>No active override</p>", unsafe_allow_html=True)
 
-            reservation_data = {
-                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "nombre_cliente": nombre,
-                "email": email,
-                "telefono": telefono,
-                "documento": documento,
-                "nacionalidad": nacionalidad,
-                "tipo_cliente": vip_status,
-                "fecha_llegada": fecha_llegada.strftime("%Y-%m-%d"),
-                "fecha_salida": fecha_salida.strftime("%Y-%m-%d"),
-                "noches": total_nights,
-                "tipo_habitacion": room_type,
-                "huespedes": total_guests,
-                "plan_comidas": meal_2,
-                "solicitudes_especiales": special_requests,
-                "estacionamiento": required_car_parking,
-                "precio_noche": round(precio_ajustado, 2),
-                "precio_total": round(total_price, 2),
-                "lead_time": lead_time,
-                "temporada": "Alta" if fecha_llegada.month in [6,7,8,12] else "Media" if fecha_llegada.month in [4,5,9,10,11] else "Baja"
-            }
-            save_to_csv(reservation_data)
-            st.balloons()
-            st.success("Reserva registrada correctamente")
-            st.subheader("Recibo de Reserva")
-            st.json({k: v for k, v in reservation_data.items() if k != "timestamp"})
-            df_reserva = pd.DataFrame([reservation_data])
-            csv_data = df_reserva.to_csv(index=False).encode("utf-8")
-            st.download_button(label="Descargar comprobante", data=csv_data,
-                               file_name=f"reserva_{documento}_{fecha_llegada.strftime('%Y%m%d')}.csv",
-                               mime="text/csv")
+elif page == "Reservations":
+    st.markdown("<h2>Reservations</h2>", unsafe_allow_html=True)
+    reservations = db.get_reservations(limit=50)
+    if reservations:
+        df = pd.DataFrame(reservations)
+        st.dataframe(df, use_container_width=True, hide_index=True)
+        csv = df.to_csv(index=False).encode("utf-8")
+        st.download_button("Export CSV", csv, "reservations.csv", "text/csv")
+    else:
+        st.markdown(f"<p style='color:{TEXT_MUTED}'>No reservations yet</p>", unsafe_allow_html=True)
 
-elif page == "Recomendaciones":
-    st.header("Recomendaciones de Precio")
-    st.markdown("Ajuste los parametros para simular diferentes escenarios de reserva y vea como cambia el precio recomendado.")
-
+elif page == "Simulator":
+    st.markdown("<h2>Price Simulator</h2>", unsafe_allow_html=True)
     today = date.today()
-    fecha_ref = st.date_input("Fecha de referencia para la simulacion", today)
     col1, col2 = st.columns(2)
     with col1:
-        lead_time_mod = st.number_input("Anticipacion (dias)", min_value=0, max_value=365, value=30)
-        mes_mod = st.selectbox("Mes de llegada", range(1, 13), format_func=lambda x: datetime(2025, x, 1).strftime("%B"))
-        total_nights_mod = st.number_input("Numero de noches", min_value=1, max_value=30, value=3)
-        meal_plan_mod = st.selectbox("Plan de comidas", ['Ninguno', 'Desayuno incluido', 'Cena incluida', 'Todo incluido'])
+        lead_time = st.number_input("Lead Time (days)", 0, 365, 30)
+        arrival = st.date_input("Arrival Date", today)
+        nights = st.number_input("Nights", 1, 30, 3)
+        guests = st.number_input("Guests", 1, 10, 2)
+        meal = st.selectbox("Meal Plan", ['Ninguno', 'Desayuno incluido', 'Cena incluida', 'Todo incluido'])
     with col2:
-        room_type_mod = st.selectbox("Tipo de habitacion", ['Predeterminado', 'Individual', 'Doble', 'Twin', 'Triple', 'Suite', 'Familiar'])
-        total_guests_mod = st.number_input("Numero de huespedes", min_value=1, max_value=10, value=2)
-        required_car_parking_mod = st.checkbox("Requiere estacionamiento")
-        special_requests_mod = st.number_input("Solicitudes especiales", min_value=0, max_value=10, value=0)
+        room = st.selectbox("Room Type", ['Predeterminado', 'Individual', 'Doble', 'Twin', 'Triple', 'Suite', 'Familiar'])
+        parking = st.checkbox("Parking Required")
+        special = st.number_input("Special Requests", 0, 10, 0)
 
-    input_mod = build_input_mod(required_car_parking_mod, lead_time_mod, mes_mod, special_requests_mod,
-                                meal_plan_mod, room_type_mod, total_guests_mod, total_nights_mod, fecha_ref)
-
+    input_data = build_input_data(parking, lead_time, arrival, 0, special, meal, room, guests, nights)
     try:
-        precio_mod = pipeline.predict(input_mod)[0]
-        st.markdown("### Resultado de la Simulacion")
-        st.success(f"Precio estimado por noche: ${precio_mod:.2f} USD")
+        pred = pipeline.predict(input_data)[0]
+        override = db.get_active_override()
+        override_pct = override["modifier_percent"] if override else 0
+        final_price = pred * (1 + override_pct / 100)
+
+        st.markdown(f"""<div style="display:flex;gap:2rem;margin:1rem 0">
+            <div class="card" style="flex:1;text-align:center">
+                <p style="color:{TEXT_MUTED};font-size:0.8rem">Base Price</p>
+                <p style="color:white;font-size:1.5rem;font-weight:700">€{pred:.2f}</p>
+            </div>
+            <div class="card" style="flex:1;text-align:center;border-color:{SAGE}">
+                <p style="color:{TEXT_MUTED};font-size:0.8rem">Final Price</p>
+                <p style="color:{SAGE};font-size:1.5rem;font-weight:700">€{final_price:.2f}</p>
+            </div>
+        </div>""", unsafe_allow_html=True)
+
+        if st.button("Save to DB"):
+            qid = db.save_query({
+                "session_id": "admin-sim",
+                "total_guests": guests, "total_nights": nights,
+                "lead_time": lead_time, "arrival_month": arrival.month,
+                "room_type": room, "meal_plan": meal,
+                "predicted_price": float(pred), "market_adjustment": override_pct,
+                "final_price": float(final_price),
+                "source": "admin_simulator"
+            })
+            st.success(f"Query saved (id={qid})")
     except Exception as e:
-        st.error(f"Error en la prediccion: {e}")
+        st.error(f"Prediction error: {e}")
+
+elif page == "Market Monitor":
+    st.markdown("<h2>Market Monitor</h2>", unsafe_allow_html=True)
+    st.markdown(f"<p style='color:{TEXT_MUTED};font-size:0.8rem'>Competitor price intelligence via raspal_scrapper</p>", unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns(3)
+    hotel_id = "sample-hotel-001"
+    with col1:
+        if st.button("Run Price Check", use_container_width=True):
+            svc = MonitoringService()
+            svc.system.load_model()
+            svc.add_hotel(hotel_id)
+            results = svc.run_once()
+            st.success(f"Checked {len(results)} hotels")
+
+            for h, r in results.items():
+                if "competitor_prices" in r:
+                    for ota, price in r["competitor_prices"].items():
+                        db.save_competitor_price(h, ota, price)
+            st.rerun()
+
+    competitor_data = db.get_latest_competitor_prices(hotel_id)
+    if competitor_data:
+        rows = ""
+        for cd in competitor_data:
+            rows += f"""<div class="card" style="padding:0.75rem 1rem;display:flex;justify-content:space-between">
+                <span style="color:white">{cd['ota']}</span>
+                <span style="color:{SAGE};font-weight:600">€{cd['price']:.0f}</span>
+            </div>"""
+        st.markdown(f"<h3>Latest OTA Prices</h3>{rows}", unsafe_allow_html=True)
+    else:
+        st.markdown(f"<p style='color:{TEXT_MUTED}'>Run a price check to see competitor data</p>", unsafe_allow_html=True)
+
+    alerts_path = os.path.join(ALERTS_DIR, f"alerts_{datetime.now():%Y%m%d}.jsonl")
+    if os.path.exists(alerts_path):
+        st.markdown("<h3>Recent Alerts</h3>", unsafe_allow_html=True)
+        with open(alerts_path) as f:
+            for line in f.readlines()[-5:]:
+                if line.strip():
+                    a = json.loads(line)
+                    st.markdown(f"""<div class="card" style="padding:0.5rem 1rem">{a['ota']} — €{a['ota_price']:.0f} vs €{a['internal_price']:.0f} (+{a['gap_percent']:.1f}%)</div>""", unsafe_allow_html=True)
+
+st.markdown("<hr>", unsafe_allow_html=True)
+st.markdown(f"""<div style="text-align:center;color:{TEXT_MUTED};font-size:0.75rem;padding:1rem 0">
+    Optimus Price v2.0 · Python · Pandas · Scikit-Learn · Streamlit · raspal_scrapper
+</div>""", unsafe_allow_html=True)

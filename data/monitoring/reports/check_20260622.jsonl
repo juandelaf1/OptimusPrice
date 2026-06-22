@@ -1,0 +1,2 @@
+{"hotel_id": "test-hotel-001", "timestamp": "2026-06-22T14:20:16.396670", "internal_price": 29.267831900945616, "competitor_prices": {}, "alerts": [], "alert_count": 0, "critical_alerts": 0, "high_alerts": 0}
+{"hotel_id": "test-hotel-002", "timestamp": "2026-06-22T14:20:39.925005", "internal_price": 29.267831900945616, "competitor_prices": {}, "alerts": [], "alert_count": 0, "critical_alerts": 0, "high_alerts": 0}
