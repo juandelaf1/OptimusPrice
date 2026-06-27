@@ -11,18 +11,22 @@
 champion:
   name: ElasticNet
   type: sklearn.linear_model.ElasticNet
-  version: 1.0
+  version: 2.0
   file: pipeline_elasticnet_20260627_190014.pkl
   size_kb: 2.6
   trained: 2026-06-27T19:00:14
   dataset: hotel_reservations_real.csv
   rows: 117429
-  features: 27
+  features: 24
+  removed_features:
+    - arrival_week_number
+    - total_nights
+    - stays_in_week_nights
   metrics:
-    r2: 0.34671179808466224
-    rmse: 31.787086835595346
-    mae: 24.392781524582286
-    mape: 23.833572820578315
+    r2: 0.347007
+    rmse: 31.7799
+    mae: 24.3740
+    mape: 23.7841
   params:
     alpha: 0.1
     l1_ratio: 0.5

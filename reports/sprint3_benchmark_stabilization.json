@@ -1,0 +1,241 @@
+{
+  "baseline": {
+    "features": [
+      "lead_time",
+      "arrival_year",
+      "arrival_month",
+      "arrival_date",
+      "arrival_week_number",
+      "arrival_day_of_week",
+      "stays_in_weekend_nights",
+      "stays_in_week_nights",
+      "total_guests",
+      "total_nights",
+      "adults",
+      "children",
+      "babies",
+      "is_repeated_guest",
+      "previous_cancellations",
+      "previous_bookings_not_canceled",
+      "booking_changes",
+      "days_in_waiting_list",
+      "required_car_parking_spaces",
+      "total_of_special_requests",
+      "room_type_value",
+      "meal_plan_value",
+      "market_segment_value",
+      "distribution_channel_value",
+      "customer_type_value",
+      "deposit_type_value",
+      "booking_status_Not_Canceled"
+    ],
+    "n_features": 27,
+    "metrics": {
+      "r2": 0.346712,
+      "rmse": 31.7871,
+      "mae": 24.3928,
+      "mape": 23.8336
+    }
+  },
+  "reduced": {
+    "features": [
+      "lead_time",
+      "arrival_year",
+      "arrival_month",
+      "arrival_date",
+      "arrival_day_of_week",
+      "stays_in_weekend_nights",
+      "total_guests",
+      "adults",
+      "children",
+      "babies",
+      "is_repeated_guest",
+      "previous_cancellations",
+      "previous_bookings_not_canceled",
+      "booking_changes",
+      "days_in_waiting_list",
+      "required_car_parking_spaces",
+      "total_of_special_requests",
+      "room_type_value",
+      "meal_plan_value",
+      "market_segment_value",
+      "distribution_channel_value",
+      "customer_type_value",
+      "deposit_type_value",
+      "booking_status_Not_Canceled"
+    ],
+    "n_features": 24,
+    "removed": [
+      "arrival_week_number",
+      "total_nights",
+      "stays_in_week_nights"
+    ],
+    "metrics": {
+      "r2": 0.347007,
+      "rmse": 31.7799,
+      "mae": 24.374,
+      "mape": 23.7841
+    },
+    "train_time": 0.449
+  },
+  "comparison": {
+    "r2": {
+      "baseline": 0.346712,
+      "reduced": 0.347007,
+      "delta": 0.000295
+    },
+    "rmse": {
+      "baseline": 31.7871,
+      "reduced": 31.7799,
+      "delta": -0.0072
+    },
+    "mae": {
+      "baseline": 24.3928,
+      "reduced": 24.374,
+      "delta": -0.0188
+    },
+    "mape": {
+      "baseline": 23.8336,
+      "reduced": 23.7841,
+      "delta": -0.0495
+    }
+  },
+  "coefficients": {
+    "room_type_value": 11.099869,
+    "arrival_month": 9.724341,
+    "arrival_year": 9.132519,
+    "market_segment_value": -7.292061,
+    "total_guests": 6.549319,
+    "children": 6.125633,
+    "lead_time": -5.068215,
+    "booking_status_Not_Canceled": -4.621856,
+    "distribution_channel_value": 3.618642,
+    "adults": 3.561024,
+    "meal_plan_value": 3.348679,
+    "deposit_type_value": 3.061425,
+    "total_of_special_requests": 2.633403,
+    "is_repeated_guest": -2.324766,
+    "arrival_date": 1.493422,
+    "booking_changes": 1.013133,
+    "previous_cancellations": -0.959436,
+    "days_in_waiting_list": 0.8233,
+    "stays_in_weekend_nights": -0.76999,
+    "required_car_parking_spaces": 0.743797,
+    "customer_type_value": -0.693573,
+    "previous_bookings_not_canceled": -0.610091,
+    "babies": -0.533418,
+    "arrival_day_of_week": -0.028663
+  },
+  "vif": {
+    "total_guests": 592301273755213.0,
+    "adults": 317847690484226.06,
+    "children": 228873629465632.78,
+    "babies": 14477280022561.225,
+    "arrival_week_number": 1162.0792,
+    "arrival_month": 1139.1303,
+    "arrival_date": 11.1184,
+    "market_segment_value": 2.6326,
+    "arrival_year": 2.108,
+    "deposit_type_value": 1.8753,
+    "distribution_channel_value": 1.8558,
+    "lead_time": 1.58,
+    "booking_status_Not_Canceled": 1.5782,
+    "room_type_value": 1.4599,
+    "customer_type_value": 1.2721,
+    "is_repeated_guest": 1.2682,
+    "total_of_special_requests": 1.2545,
+    "previous_bookings_not_canceled": 1.246,
+    "required_car_parking_spaces": 1.1211,
+    "previous_cancellations": 1.0801,
+    "meal_plan_value": 1.0675,
+    "booking_changes": 1.0666,
+    "days_in_waiting_list": 1.0541,
+    "arrival_day_of_week": 1.0003,
+    "stays_in_weekend_nights": -5673727959130.373,
+    "stays_in_week_nights": -21332319959255.55,
+    "total_nights": -38928159859690.95
+  },
+  "multicollinearity": {
+    "condition_number": 723983382103766.2,
+    "high_corr_pairs": 4,
+    "pairs": [
+      [
+        "arrival_month",
+        "arrival_week_number",
+        0.9951
+      ],
+      [
+        "stays_in_weekend_nights",
+        "total_nights",
+        0.7588
+      ],
+      [
+        "stays_in_week_nights",
+        "total_nights",
+        0.9395
+      ],
+      [
+        "total_guests",
+        "adults",
+        0.7697
+      ]
+    ]
+  },
+  "ablation": {
+    "baseline": {
+      "r2": 0.346712,
+      "rmse": 31.7871,
+      "mae": 24.3928,
+      "mape": 23.8336
+    },
+    "arrival_week_number": {
+      "r2": 0.345901,
+      "rmse": 31.8068,
+      "mae": 24.3957,
+      "mape": 23.796,
+      "delta_r2": -0.000811,
+      "delta_rmse": 0.0197
+    },
+    "arrival_month": {
+      "r2": 0.342927,
+      "rmse": 31.879,
+      "mae": 24.4499,
+      "mape": 23.824,
+      "delta_r2": -0.003785,
+      "delta_rmse": 0.0919
+    },
+    "total_nights": {
+      "r2": 0.346712,
+      "rmse": 31.7871,
+      "mae": 24.3928,
+      "mape": 23.8336,
+      "delta_r2": 0.0,
+      "delta_rmse": 0.0
+    },
+    "stays_in_week_nights": {
+      "r2": 0.347184,
+      "rmse": 31.7756,
+      "mae": 24.3835,
+      "mape": 23.8286,
+      "delta_r2": 0.000472,
+      "delta_rmse": -0.0115
+    },
+    "arrival_month+arrival_week_number": {
+      "r2": 0.229129,
+      "rmse": 34.5294,
+      "mae": 26.2022,
+      "mape": 24.1511,
+      "delta_r2": -0.117583,
+      "delta_rmse": 2.7423
+    },
+    "total_nights+stays_in_week_nights": {
+      "r2": 0.347816,
+      "rmse": 31.7602,
+      "mae": 24.371,
+      "mape": 23.8217,
+      "delta_r2": 0.001104,
+      "delta_rmse": -0.0269
+    }
+  },
+  "status": "champion"
+}

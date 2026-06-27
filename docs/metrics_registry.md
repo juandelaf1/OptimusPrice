@@ -9,10 +9,10 @@
 
 | Metric | Value | Formula | Unit | Source |
 |--------|-------|---------|------|--------|
-| R2 | 0.3467 | 1 - SS_res/SS_tot | dimensionless | benchmark_results.json |
-| RMSE | 31.79 | sqrt(mean(y - y_hat)^2) | same as target ($) | benchmark_results.json |
-| MAE | 24.39 | mean(|y - y_hat|) | same as target ($) | benchmark_results.json |
-| MAPE | 23.83% | mean(|y - y_hat|/y) * 100 | percentage | benchmark_results.json |
+| R2 | 0.3470 | 1 - SS_res/SS_tot | dimensionless | benchmark_final |
+| RMSE | 31.78 | sqrt(mean(y - y_hat)^2) | same as target ($) | benchmark_final |
+| MAE | 24.37 | mean(|y - y_hat|) | same as target ($) | benchmark_final |
+| MAPE | 23.78% | mean(|y - y_hat|/y) * 100 | percentage | benchmark_final |
 
 ## Occupancy Model Metrics
 
