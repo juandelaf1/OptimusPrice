@@ -1,0 +1,155 @@
+# Artifact Registry
+
+**Last Updated**: June 2026
+**Source of Truth**: This file
+
+---
+
+## Model Artifacts
+
+```yaml
+models:
+  pipeline_elasticnet_20260627_190014.pkl:
+    path: models/pipeline_elasticnet_20260627_190014.pkl
+    type: sklearn.pipeline.Pipeline
+    model: ElasticNet
+    size_kb: 2.6
+    created: 2026-06-27T19:00:14
+    status: active
+    usage: primary price model
+
+  pipeline_trained_model.pkl:
+    path: models/pipeline_trained_model.pkl
+    type: sklearn.pipeline.Pipeline
+    model: ElasticNet
+    size_kb: 2.6
+    created: 2026-06-27T19:00:14
+    status: active
+    usage: production alias
+
+  occupancy_predictor.pkl:
+    path: models/occupancy_predictor.pkl
+    type: sklearn.pipeline.Pipeline
+    model: GradientBoostingClassifier
+    size_kb: 3677
+    created: 2026-06-26
+    status: active
+    usage: occupancy prediction
+
+  pipeline_gradientboosting_20260626_192846.pkl:
+    path: models/pipeline_gradientboosting_20260626_192846.pkl
+    type: sklearn.pipeline.Pipeline
+    model: GradientBoostingRegressor
+    size_kb: 1712
+    created: 2026-06-26
+    status: deprecated
+    usage: replaced by ElasticNet
+
+  pipeline_randomforest_20260627_184318.pkl:
+    path: models/pipeline_randomforest_20260627_184318.pkl
+    type: sklearn.pipeline.Pipeline
+    model: RandomForestRegressor
+    size_kb: 54850
+    created: 2026-06-27
+    status: deprecated
+    usage: replaced by ElasticNet, negative R2
+```
+
+## Report Artifacts
+
+```yaml
+reports:
+  benchmark_results.json:
+    path: reports/benchmark_results.json
+    type: json
+    status: active
+    usage: 6-model comparison results
+
+  feature_analysis.json:
+    path: reports/feature_analysis.json
+    type: json
+    status: active
+    usage: correlation and leakage analysis
+
+  benchmark_validation_report.json:
+    path: reports/benchmark_validation_report.json
+    type: json
+    status: active
+    usage: scientific validation results
+
+  benchmark_validation_report.md:
+    path: benchmark_validation_report.md
+    type: markdown
+    status: active
+    usage: human-readable validation report
+```
+
+## Data Artifacts
+
+```yaml
+data:
+  hotel_reservations_real.csv:
+    path: data/processed/hotel_reservations_real.csv
+    type: csv
+    rows: 117429
+    status: active
+    usage: primary training data
+
+  hotel_bookings_kaggle.csv:
+    path: data/scraped/hotel_bookings_kaggle.csv
+    type: csv
+    rows: 119390
+    status: raw
+    usage: original Kaggle download
+```
+
+## Documentation Artifacts
+
+```yaml
+docs:
+  AGENTS.md:
+    path: AGENTS.md
+    type: markdown
+    status: active
+    usage: operational handbook
+
+  roadmap.md:
+    path: roadmap.md
+    type: markdown
+    status: active
+    usage: project roadmap
+
+  ROADMAP_EXECUTION.md:
+    path: ROADMAP_EXECUTION.md
+    type: markdown
+    status: active
+    usage: task execution plan
+
+  validation_report.json:
+    path: validation_report.json
+    type: json
+    status: stale
+    reason: Still says "production_ready" with GradientBoosting as champion
+    action_required: Update to reflect ElasticNet as champion
+```
+
+## Orphan Artifacts
+
+```yaml
+orphan:
+  validation_report.json:
+    path: validation_report.json
+    status: orphan
+    reason: Not referenced by any current documentation
+    action: Update or delete
+
+  retrain_report.json:
+    path: retrain_report.json
+    status: orphan
+    reason: Contains leaked baseline_comparison alongside real metrics
+    action: Clean up or delete
+```
+
+---
+
+*This file is the single source of truth for all artifacts.*

@@ -1,0 +1,110 @@
+# Model Registry
+
+**Last Updated**: June 2026
+**Source of Truth**: This file
+
+---
+
+## Champion Model
+
+```yaml
+champion:
+  name: ElasticNet
+  type: sklearn.linear_model.ElasticNet
+  version: 1.0
+  file: pipeline_elasticnet_20260627_190014.pkl
+  size_kb: 2.6
+  trained: 2026-06-27T19:00:14
+  dataset: hotel_reservations_real.csv
+  rows: 117429
+  features: 27
+  metrics:
+    r2: 0.34671179808466224
+    rmse: 31.787086835595346
+    mae: 24.392781524582286
+    mape: 23.833572820578315
+  params:
+    alpha: 0.1
+    l1_ratio: 0.5
+    max_iter: 5000
+    random_state: 42
+```
+
+## Challenger Models
+
+```yaml
+challengers:
+  GradientBoosting:
+    type: sklearn.ensemble.GradientBoostingRegressor
+    file: null
+    metrics:
+      r2: 0.14277450169429196
+      rmse: 36.41211126374175
+    status: baseline
+    reason: Underperforms ElasticNet on all validation strategies
+
+  LightGBM:
+    type: lightgbm.LGBMRegressor
+    file: null
+    metrics:
+      r2: 0.151194
+      rmse: 36.2328
+    status: baseline
+
+  XGBoost:
+    type: xgboost.XGBRegressor
+    file: null
+    metrics:
+      r2: 0.141064
+      rmse: 36.4484
+    status: baseline
+
+  CatBoost:
+    type: catboost.CatBoostRegressor
+    file: null
+    metrics:
+      r2: 0.111847
+      rmse: 37.0631
+    status: baseline
+
+  RandomForest:
+    type: sklearn.ensemble.RandomForestRegressor
+    file: null
+    metrics:
+      r2: -0.0249
+      rmse: 39.82
+    status: deprecated
+    reason: Negative R2 on test set
+```
+
+## Deprecated Models
+
+```yaml
+deprecated:
+  pipeline_gradientboosting_20260626_192846.pkl:
+    reason: Replaced by ElasticNet
+    date: 2026-06-27
+
+  pipeline_randomforest_20260627_184318.pkl:
+    reason: Replaced by ElasticNet, negative R2
+    date: 2026-06-27
+```
+
+## Occupancy Model
+
+```yaml
+occupancy:
+  name: OccupancyPredictor
+  type: sklearn.ensemble.GradientBoostingClassifier
+  file: models/occupancy_predictor.pkl
+  features: 16
+  metrics:
+    accuracy: 0.7938
+    auc_roc: 0.8575
+    brier_score: 0.1442
+  status: active
+```
+
+---
+
+*This file is the single source of truth for all models.*

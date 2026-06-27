@@ -1,0 +1,48 @@
+{
+  "timestamp": "2026-06-27T19:00:00",
+  "status": "research_prototype",
+  "champion_model": "ElasticNet",
+  "data_source": "Kaggle Hotel Booking Demand",
+  "data_rows": 117429,
+  "models": {
+    "price_model": {
+      "type": "ElasticNet",
+      "r2": 0.3467,
+      "rmse": 31.79,
+      "mae": 24.39,
+      "mape": 23.83,
+      "features": 27,
+      "status": "real_data",
+      "file": "pipeline_elasticnet_20260627_190014.pkl"
+    },
+    "occupancy_model": {
+      "type": "GradientBoostingClassifier",
+      "accuracy": 0.7938,
+      "auc_roc": 0.8575,
+      "brier_score": 0.1442,
+      "features": 16,
+      "status": "real_data"
+    }
+  },
+  "engines": {
+    "elasticity_engine": "operational",
+    "revenue_optimizer": "operational"
+  },
+  "cleanup": {
+    "synthetic_data_removed": true,
+    "fallbacks_removed": true,
+    "data_generator_deleted": true,
+    "old_models_deleted": true
+  },
+  "artifacts": {
+    "real_data": "data/processed/hotel_reservations_real.csv",
+    "kaggle_data": "data/scraped/hotel_bookings_kaggle.csv",
+    "price_model": "models/pipeline_elasticnet_20260627_190014.pkl",
+    "occupancy_model": "models/occupancy_predictor.pkl"
+  },
+  "validation": {
+    "temporal_split_r2": 0.3467,
+    "tscv_r2": 0.2158,
+    "rolling_r2": 0.2650
+  }
+}
