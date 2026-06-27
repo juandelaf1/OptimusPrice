@@ -1,0 +1,216 @@
+{
+  "row_count_preserved": true,
+  "rows_before": 117429,
+  "rows_after": 117429,
+  "null_check": {
+    "month_sin": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    },
+    "month_cos": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    },
+    "week_sin": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    },
+    "week_cos": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    },
+    "quarter": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    },
+    "season": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    },
+    "is_high_season": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    },
+    "is_weekend_arrival": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    },
+    "days_until_peak": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    },
+    "lead_time_bin": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    },
+    "lead_time_category": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    },
+    "short_stay": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    },
+    "medium_stay": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    },
+    "long_stay": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    },
+    "stay_bucket": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    },
+    "booking_window": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    },
+    "guest_density": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    },
+    "room_intensity": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "status": "PASS"
+    }
+  },
+  "leakage_check": {
+    "target_in_features": false
+  },
+  "range_check": {
+    "month_sin": {
+      "min": -1.0,
+      "max": 1.0,
+      "expected_min": -1.0,
+      "expected_max": 1.0,
+      "status": "PASS"
+    },
+    "month_cos": {
+      "min": -1.0,
+      "max": 1.0,
+      "expected_min": -1.0,
+      "expected_max": 1.0,
+      "status": "PASS"
+    },
+    "week_sin": {
+      "min": -1.0,
+      "max": 1.0,
+      "expected_min": -1.0,
+      "expected_max": 1.0,
+      "status": "PASS"
+    },
+    "week_cos": {
+      "min": -1.0,
+      "max": 1.0,
+      "expected_min": -1.0,
+      "expected_max": 1.0,
+      "status": "PASS"
+    },
+    "quarter": {
+      "min": 1.0,
+      "max": 4.0,
+      "expected_min": 1,
+      "expected_max": 4,
+      "status": "PASS"
+    },
+    "season": {
+      "min": 0.0,
+      "max": 3.0,
+      "expected_min": 0,
+      "expected_max": 3,
+      "status": "PASS"
+    },
+    "is_high_season": {
+      "min": 0.0,
+      "max": 1.0,
+      "expected_min": 0,
+      "expected_max": 1,
+      "status": "PASS"
+    },
+    "is_weekend_arrival": {
+      "min": 0.0,
+      "max": 1.0,
+      "expected_min": 0,
+      "expected_max": 1,
+      "status": "PASS"
+    },
+    "lead_time_bin": {
+      "min": 0.0,
+      "max": 4.0,
+      "expected_min": 0,
+      "expected_max": 4,
+      "status": "PASS"
+    },
+    "short_stay": {
+      "min": 0.0,
+      "max": 1.0,
+      "expected_min": 0,
+      "expected_max": 1,
+      "status": "PASS"
+    },
+    "medium_stay": {
+      "min": 0.0,
+      "max": 1.0,
+      "expected_min": 0,
+      "expected_max": 1,
+      "status": "PASS"
+    },
+    "long_stay": {
+      "min": 0.0,
+      "max": 1.0,
+      "expected_min": 0,
+      "expected_max": 1,
+      "status": "PASS"
+    },
+    "stay_bucket": {
+      "min": 0.0,
+      "max": 4.0,
+      "expected_min": 0,
+      "expected_max": 4,
+      "status": "PASS"
+    },
+    "guest_density": {
+      "min": 0.0,
+      "max": 4.0,
+      "expected_min": 0,
+      "expected_max": 7,
+      "status": "PASS"
+    },
+    "room_intensity": {
+      "min": 0.0,
+      "max": 5.0,
+      "expected_min": 0,
+      "expected_max": 7,
+      "status": "PASS"
+    }
+  },
+  "metadata": {
+    "timestamp": "2026-06-28T01:31:28.166054",
+    "sprint": 5,
+    "phase": 1,
+    "new_features_count": 18,
+    "total_features_before": 28,
+    "total_features_after": 46,
+    "dataset": "hotel_reservations_real.csv"
+  }
+}
