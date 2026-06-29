@@ -17,6 +17,8 @@ def test_data_processing_imports():
 
 
 def test_training_imports():
-    from optimus_price.training import train_and_save_model
+    from optimus_price.training import train_all_models, select_best_model, build_pipeline
 
-    assert callable(train_and_save_model)
+    assert callable(train_all_models)
+    assert callable(select_best_model)
+    assert callable(build_pipeline)
