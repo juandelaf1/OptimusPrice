@@ -1,0 +1,45 @@
+# V2 Scraping Configuration
+# Optimus Price — Mallorca Market Data
+
+version: "1.0"
+location:
+  name: "Mallorca"
+  bounding_box:
+    north: 39.95
+    south: 39.15
+    east: 3.45
+    west: 2.30
+
+sources:
+  booking:
+    enabled: true
+    base_url: "https://www.booking.com"
+    max_listings: 200
+    scrape_interval: "daily"
+    delay_between_requests: 2.0
+    user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+    
+  airbnb:
+    enabled: true
+    base_url: "https://www.airbnb.com"
+    max_listings: 200
+    scrape_interval: "daily"
+    delay_between_requests: 3.0
+    
+  expedia:
+    enabled: false
+    base_url: "https://www.expedia.com"
+    max_listings: 100
+    scrape_interval: "daily"
+
+target_dates:
+  lookahead_days: 365
+  date_range: "2025-07-01 to 2026-12-31"
+
+quality:
+  min_price: 10
+  max_price: 1000
+  min_quality_score: 0.5
+
+database:
+  path: "data/v2_market/processed/market_prices.db"

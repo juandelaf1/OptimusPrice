@@ -8,3 +8,23 @@ venv/
 dist/
 build/
 .DS_Store
+Thumbs.db
+
+# Data files (not versioned)
+data/v2_market/processed/
+data/v2_market/raw/ine/*.csv
+data/v2_market/raw/airbnb/*.csv
+data/v2_market/raw/google_trends/*.csv
+data/scraped/
+data/processed/hotel_reservations_real.csv
+*.db
+
+# ML artifacts
+catboost_info/
+models/pipeline_gradientboosting_*.pkl
+models/pipeline_randomforest_*.pkl
+models/occupancy_predictor.pkl
+
+# IDE
+.vscode/
+.idea/

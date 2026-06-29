@@ -1,4 +1,3 @@
-from optimus_price.data_generator import HotelDataGenerator
 from optimus_price.data_processing import load_and_clean_data, prepare_features, run_pipeline
 from optimus_price.training import (
     load_processed_data, train_test_split_temporal, train_all_models,
@@ -11,7 +10,6 @@ from optimus_price.evaluation import (
 )
 
 __all__ = [
-    "HotelDataGenerator",
     "load_and_clean_data",
     "prepare_features",
     "run_pipeline",

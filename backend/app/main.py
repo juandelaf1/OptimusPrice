@@ -1,6 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.endpoints import router
+from app.ws.manager import manager
 
 app = FastAPI(
     title="Optimus Price API",
@@ -17,3 +18,23 @@ app.add_middleware(
 )
 
 app.include_router(router, prefix="/api/v1")
+
+
+@app.websocket("/ws/prices/{hotel_id}")
+async def websocket_prices(ws: WebSocket, hotel_id: str):
+    await manager.connect(ws)
+    try:
+        while True:
+            await ws.receive_text()
+    except WebSocketDisconnect:
+        manager.disconnect(ws)
+
+
+@app.websocket("/ws/alerts/{hotel_id}")
+async def websocket_alerts(ws: WebSocket, hotel_id: str):
+    await manager.connect(ws)
+    try:
+        while True:
+            await ws.receive_text()
+    except WebSocketDisconnect:
+        manager.disconnect(ws)

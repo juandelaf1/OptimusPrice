@@ -1,11 +1,71 @@
-model_name: pipeline_gradientboosting_20260622_140404
-algorithm: GradientBoosting
-training_date: 2026-06-22
-features_count: 41
-competitor_features: 15
-rmse: 0.38
-r2_score: 0.9998
-mae: 0.27
-data_source: hotel_reservations_enriched.csv
-phase: "2 - Enhanced with competitor features"
-status: production
+ElasticNet:
+  file: pipeline_elasticnet_20260627_190014.pkl
+  metrics:
+    mae: 24.392781524582286
+    mape: 23.833572820578315
+    r2: 0.34671179808466224
+    rmse: 31.787086835595346
+  model: ElasticNet
+  timestamp: '20260627_190014'
+GradientBoosting:
+  metrics:
+    mae: 29.486774092352807
+    mape: 28.02554344912634
+    r2: 0.14277450169429196
+    rmse: 36.41211126374175
+  model: GradientBoosting
+  timestamp: '20260627_190014'
+V1_FROZEN:
+  alpha: 0.024
+  feature_names:
+  - lead_time
+  - arrival_year
+  - arrival_month
+  - arrival_date
+  - arrival_week_number
+  - arrival_day_of_week
+  - stays_in_weekend_nights
+  - stays_in_week_nights
+  - total_guests
+  - total_nights
+  - adults
+  - children
+  - babies
+  - is_repeated_guest
+  - previous_cancellations
+  - previous_bookings_not_canceled
+  - booking_changes
+  - days_in_waiting_list
+  - required_car_parking_spaces
+  - total_of_special_requests
+  - room_type_value
+  - meal_plan_value
+  - market_segment_value
+  - distribution_channel_value
+  - customer_type_value
+  - deposit_type_value
+  - booking_status_Not_Canceled
+  features: 27
+  l1_ratio: 0.725
+  metrics:
+    gap_r2: 0.0038429013437056847
+    mae: 24.223980280714127
+    mape: 23.8678311447877
+    r2: 0.3593929524697176
+    rmse: 31.477061084521488
+  model: ElasticNet
+  params:
+    alpha: 0.024
+    copy_X: true
+    fit_intercept: true
+    l1_ratio: 0.725
+    max_iter: 10000
+    positive: false
+    precompute: false
+    random_state: 42
+    selection: cyclic
+    tol: 0.0001
+    warm_start: false
+  scaler: None (NoScaler)
+  status: V1_FROZEN
+  timestamp: '20260629_171021'

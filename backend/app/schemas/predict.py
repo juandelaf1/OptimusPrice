@@ -35,3 +35,48 @@ class HealthResponse(BaseModel):
     status: str = "ok"
     model_loaded: bool
     version: str = "2.0"
+
+
+class DashboardStats(BaseModel):
+    recommended_price: float
+    revenue_impact: float
+    occupancy_forecast: int
+    active_alerts: int
+    critical_alerts: int
+    total_reservations: int
+    monthly_revenue: float
+
+
+class CompetitorPriceRow(BaseModel):
+    ota: str
+    yesterday: float
+    today: float
+    gap_pct: float
+    trend: str
+
+
+class TrendPoint(BaseModel):
+    date: str
+    price: float
+
+
+class ReservationRow(BaseModel):
+    id: str
+    guest_name: str
+    email: str
+    check_in: str
+    check_out: str
+    nights: int
+    guests: int
+    room_type: str
+    final_price: float
+    status: str
+
+
+class AlertRow(BaseModel):
+    id: str
+    type: str
+    severity: str
+    message: str
+    read: bool
+    created_at: str

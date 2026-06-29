@@ -1,0 +1,525 @@
+# Candidate Features
+
+**Generated**: June 2026
+**Status**: Design phase
+
+---
+
+## Temporal Features
+
+```yaml
+temporal:
+  season:
+    description: "Season derived from month"
+    formula: "month_to_season(arrival_month)"
+    type: categorical
+    values: [0, 1, 2, 3]
+    source: derived
+    priority: HIGH
+    complexity: LOW
+
+  quarter:
+    description: "Quarter of year"
+    formula: "(arrival_month - 1) // 3 + 1"
+    type: int
+    values: [1, 2, 3, 4]
+    source: derived
+    priority: HIGH
+    complexity: LOW
+
+  month_sin:
+    description: "Cyclical month encoding (sine)"
+    formula: "sin(2 * pi * arrival_month / 12)"
+    type: float
+    range: [-1, 1]
+    source: derived
+    priority: HIGH
+    complexity: LOW
+
+  month_cos:
+    description: "Cyclical month encoding (cosine)"
+    formula: "cos(2 * pi * arrival_month / 12)"
+    type: float
+    range: [-1, 1]
+    source: derived
+    priority: HIGH
+    complexity: LOW
+
+  day_sin:
+    description: "Cyclical day encoding (sine)"
+    formula: "sin(2 * pi * arrival_day_of_week / 7)"
+    type: float
+    range: [-1, 1]
+    source: derived
+    priority: MEDIUM
+    complexity: LOW
+
+  day_cos:
+    description: "Cyclical day encoding (cosine)"
+    formula: "cos(2 * pi * arrival_day_of_week / 7)"
+    type: float
+    range: [-1, 1]
+    source: derived
+    priority: MEDIUM
+    complexity: LOW
+
+  is_weekend:
+    description: "Whether arrival is on weekend"
+    formula: "1 if arrival_day_of_week in [5, 6] else 0"
+    type: binary
+    values: [0, 1]
+    source: derived
+    priority: HIGH
+    complexity: LOW
+
+  is_month_start:
+    description: "Whether arrival is in first week of month"
+    formula: "1 if arrival_date <= 7 else 0"
+    type: binary
+    values: [0, 1]
+    source: derived
+    priority: LOW
+    complexity: LOW
+
+  is_month_end:
+    description: "Whether arrival is in last week of month"
+    formula: "1 if arrival_date >= 25 else 0"
+    type: binary
+    values: [0, 1]
+    source: derived
+    priority: LOW
+    complexity: LOW
+```
+
+## Booking Behavior Features
+
+```yaml
+booking_behavior:
+  lead_time_bin:
+    description: "Lead time categorized into bins"
+    formula: "pd.cut(lead_time, bins=[0, 7, 30, 90, 180, 737])"
+    type: categorical
+    values: [0, 1, 2, 3, 4]
+    source: derived
+    priority: HIGH
+    complexity: LOW
+
+  advance_booking:
+    description: "Whether booking was made more than 30 days in advance"
+    formula: "1 if lead_time > 30 else 0"
+    type: binary
+    values: [0, 1]
+    source: derived
+    priority: HIGH
+    complexity: LOW
+
+  stay_length_category:
+    description: "Stay length categorized"
+    formula: "pd.cut(total_nights, bins=[0, 1, 3, 7, 14, 39])"
+    type: categorical
+    values: [0, 1, 2, 3, 4]
+    source: derived
+    priority: MEDIUM
+    complexity: LOW
+
+  is_short_stay:
+    description: "Whether stay is 1 night or less"
+    formula: "1 if total_nights <= 1 else 0"
+    type: binary
+    values: [0, 1]
+    source: derived
+    priority: MEDIUM
+    complexity: LOW
+
+  is_long_stay:
+    description: "Whether stay is 7 nights or more"
+    formula: "1 if total_nights >= 7 else 0"
+    type: binary
+    values: [0, 1]
+    source: derived
+    priority: MEDIUM
+    complexity: LOW
+
+  has_children:
+    description: "Whether booking includes children"
+    formula: "1 if children > 0 else 0"
+    type: binary
+    values: [0, 1]
+    source: derived
+    priority: HIGH
+    complexity: LOW
+
+  has_babies:
+    description: "Whether booking includes babies"
+    formula: "1 if babies > 0 else 0"
+    type: binary
+    values: [0, 1]
+    source: derived
+    priority: LOW
+    complexity: LOW
+
+  cancellation_history:
+    description: "Whether guest has cancelled before"
+    formula: "1 if previous_cancellations > 0 else 0"
+    type: binary
+    values: [0, 1]
+    source: derived
+    priority: MEDIUM
+    complexity: LOW
+
+  loyalty_score:
+    description: "Simple loyalty score"
+    formula: "is_repeated_guest + (previous_bookings_not_canceled > 0)"
+    type: int
+    values: [0, 1, 2]
+    source: derived
+    priority: MEDIUM
+    complexity: LOW
+```
+
+## Demand Indicator Features
+
+```yaml
+demand_indicators:
+  weekend_ratio:
+    description: "Proportion of stay that is weekend nights"
+    formula: "stays_in_weekend_nights / (total_nights + 1)"
+    type: float
+    range: [0, 1]
+    source: derived
+    priority: HIGH
+    complexity: LOW
+
+  guest_density:
+    description: "Guests per night"
+    formula: "total_guests / (total_nights + 1)"
+    type: float
+    range: [0, 7]
+    source: derived
+    priority: MEDIUM
+    complexity: LOW
+
+  booking_intensity:
+    description: "Booking changes per day of lead time"
+    formula: "booking_changes / (lead_time + 1)"
+    type: float
+    range: [0, 18]
+    source: derived
+    priority: LOW
+    complexity: LOW
+
+  special_request_rate:
+    description: "Special requests per night"
+    formula: "total_of_special_requests / (total_nights + 1)"
+    type: float
+    range: [0, 5]
+    source: derived
+    priority: MEDIUM
+    complexity: LOW
+
+  parking_rate:
+    description: "Parking spaces per guest"
+    formula: "required_car_parking_spaces / (total_guests + 1)"
+    type: float
+    range: [0, 4]
+    source: derived
+    priority: LOW
+    complexity: LOW
+
+  wait_ratio:
+    description: "Waiting list days per lead time day"
+    formula: "days_in_waiting_list / (lead_time + 1)"
+    type: float
+    range: [0, 126]
+    source: derived
+    priority: LOW
+    complexity: LOW
+
+  cancellation_ratio:
+    description: "Cancellation rate"
+    formula: "previous_cancellations / (previous_bookings_not_canceled + 1)"
+    type: float
+    range: [0, 15]
+    source: derived
+    priority: MEDIUM
+    complexity: LOW
+```
+
+## Interaction Features
+
+```yaml
+interactions:
+  room_market:
+    description: "Room type and market segment interaction"
+    formula: "room_type_value * market_segment_value"
+    type: int
+    range: [0, 48]
+    source: derived
+    priority: MEDIUM
+    complexity: LOW
+
+  room_customer:
+    description: "Room type and customer type interaction"
+    formula: "room_type_value * customer_type_value"
+    type: int
+    range: [0, 24]
+    source: derived
+    priority: LOW
+    complexity: LOW
+
+  lead_time_market:
+    description: "Lead time and market segment interaction"
+    formula: "lead_time * market_segment_value"
+    type: float
+    range: [0, 4422]
+    source: derived
+    priority: LOW
+    complexity: LOW
+
+  guests_total_nights:
+    description: "Guests multiplied by nights"
+    formula: "total_guests * total_nights"
+    type: float
+    range: [0, 273]
+    source: derived
+    priority: MEDIUM
+    complexity: LOW
+
+  month_room:
+    description: "Month and room type interaction"
+    formula: "arrival_month * room_type_value"
+    type: int
+    range: [0, 96]
+    source: derived
+    priority: LOW
+    complexity: LOW
+```
+
+## Historical Aggregate Features
+
+```yaml
+historical_aggregates:
+  rolling_occupancy_7d:
+    description: "7-day rolling occupancy rate"
+    formula: "mean(booking_status_Not_Canceled) over 7-day window"
+    type: float
+    range: [0, 1]
+    source: derived
+    priority: HIGH
+    complexity: MEDIUM
+    requires_temporal: true
+
+  rolling_occupancy_30d:
+    description: "30-day rolling occupancy rate"
+    formula: "mean(booking_status_Not_Canceled) over 30-day window"
+    type: float
+    range: [0, 1]
+    source: derived
+    priority: HIGH
+    complexity: MEDIUM
+    requires_temporal: true
+
+  rolling_adr_7d:
+    description: "7-day rolling average daily rate"
+    formula: "mean(avg_price_per_room) over 7-day window"
+    type: float
+    range: [0, 510]
+    source: derived
+    priority: HIGH
+    complexity: MEDIUM
+    requires_temporal: true
+    leakage_risk: Target-related
+
+  rolling_adr_30d:
+    description: "30-day rolling average daily rate"
+    formula: "mean(avg_price_per_room) over 30-day window"
+    type: float
+    range: [0, 510]
+    source: derived
+    priority: HIGH
+    complexity: MEDIUM
+    requires_temporal: true
+    leakage_risk: Target-related
+
+  rolling_booking_pace_7d:
+    description: "7-day rolling booking count"
+    formula: "count(bookings) over 7-day window"
+    type: int
+    range: [0, N]
+    source: derived
+    priority: MEDIUM
+    complexity: MEDIUM
+    requires_temporal: true
+
+  rolling_booking_pace_30d:
+    description: "30-day rolling booking count"
+    formula: "count(bookings) over 30-day window"
+    type: int
+    range: [0, N]
+    source: derived
+    priority: MEDIUM
+    complexity: MEDIUM
+    requires_temporal: true
+
+  lag_price_7d:
+    description: "Price lagged 7 days"
+    formula: "avg_price_per_room lagged 7 days"
+    type: float
+    range: [0, 510]
+    source: derived
+    priority: HIGH
+    complexity: MEDIUM
+    requires_temporal: true
+    leakage_risk: Target-related
+
+  lag_price_30d:
+    description: "Price lagged 30 days"
+    formula: "avg_price_per_room lagged 30 days"
+    type: float
+    range: [0, 510]
+    source: derived
+    priority: HIGH
+    complexity: MEDIUM
+    requires_temporal: true
+    leakage_risk: Target-related
+
+  lag_price_90d:
+    description: "Price lagged 90 days"
+    formula: "avg_price_per_room lagged 90 days"
+    type: float
+    range: [0, 510]
+    source: derived
+    priority: MEDIUM
+    complexity: MEDIUM
+    requires_temporal: true
+    leakage_risk: Target-related
+```
+
+## Competitor Features (Placeholder)
+
+```yaml
+competitor:
+  competitor_avg_price:
+    description: "Average competitor price"
+    formula: "mean(competitor_prices)"
+    type: float
+    source: external
+    priority: HIGH
+    complexity: HIGH
+    status: placeholder
+    missing_allowed: true
+
+  competitor_min_price:
+    description: "Minimum competitor price"
+    formula: "min(competitor_prices)"
+    type: float
+    source: external
+    priority: HIGH
+    complexity: HIGH
+    status: placeholder
+    missing_allowed: true
+
+  competitor_max_price:
+    description: "Maximum competitor price"
+    formula: "max(competitor_prices)"
+    type: float
+    source: external
+    priority: HIGH
+    complexity: HIGH
+    status: placeholder
+    missing_allowed: true
+
+  price_vs_competitor:
+    description: "Price difference vs competitor average"
+    formula: "(own_price - competitor_avg) / competitor_avg"
+    type: float
+    source: external
+    priority: HIGH
+    complexity: HIGH
+    status: placeholder
+    missing_allowed: true
+
+  competitor_count:
+    description: "Number of competitors"
+    formula: "count(competitors)"
+    type: int
+    source: external
+    priority: MEDIUM
+    complexity: HIGH
+    status: placeholder
+    missing_allowed: true
+```
+
+## Weather & Events Features (Placeholder)
+
+```yaml
+weather_events:
+  temperature:
+    description: "Average temperature at destination"
+    formula: "weather_api.temperature"
+    type: float
+    source: external
+    priority: MEDIUM
+    complexity: HIGH
+    status: placeholder
+    missing_allowed: true
+
+  precipitation:
+    description: "Rain/snow indicator"
+    formula: "1 if weather.precipitation > 0 else 0"
+    type: binary
+    source: external
+    priority: LOW
+    complexity: HIGH
+    status: placeholder
+    missing_allowed: true
+
+  is_holiday:
+    description: "Whether date is a public holiday"
+    formula: "holiday_calendar.is_holiday(arrival_date)"
+    type: binary
+    source: external
+    priority: MEDIUM
+    complexity: MEDIUM
+    status: placeholder
+    missing_allowed: true
+
+  is_event:
+    description: "Whether there is a local event"
+    formula: "event_calendar.is_event(arrival_date, location)"
+    type: binary
+    source: external
+    priority: MEDIUM
+    complexity: HIGH
+    status: placeholder
+    missing_allowed: true
+
+  event_type:
+    description: "Type of local event"
+    formula: "event_calendar.event_type(arrival_date, location)"
+    type: categorical
+    source: external
+    priority: LOW
+    complexity: HIGH
+    status: placeholder
+    missing_allowed: true
+```
+
+---
+
+## Summary
+
+| Group | Count | Ready | Blocked |
+|-------|-------|-------|---------|
+| Temporal | 9 | YES | 0 |
+| Booking Behavior | 9 | YES | 0 |
+| Demand Indicators | 7 | YES | 0 |
+| Interactions | 5 | YES | 0 |
+| Historical Aggregates | 9 | YES | 0 |
+| Competitor | 5 | NO | 5 (no data) |
+| Weather & Events | 5 | NO | 5 (no data) |
+| **Total** | **49** | **39** | **10** |
+
+---
+
+*Generated by Sprint 4 feature engineering design*

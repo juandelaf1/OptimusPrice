@@ -133,11 +133,73 @@ def build_booking_behavior_features(df: pd.DataFrame) -> pd.DataFrame:
     return result
 
 
+def build_temporal_aggregate_features(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Generate temporal aggregate features (lags, rolling means, trends).
+    
+    Features:
+    - lag_7, lag_30, lag_90: Price lagged by days
+    - rolling_mean_7, rolling_mean_30, rolling_mean_90: Rolling average price
+    - booking_velocity: Bookings per day
+    - occupancy_trend: Occupancy change trend
+    - adr_trend: ADR change trend
+    - pace: Booking pace
+    - pickup: Recent pickup rate
+    """
+    result = df.copy()
+    
+    # Sort by date for temporal features
+    result = result.sort_values(["arrival_year", "arrival_month", "arrival_date"]).reset_index(drop=True)
+    
+    target = "avg_price_per_room"
+    status = "booking_status_Not_Canceled"
+    
+    # Lag features (price lagged by rows, approximate daily) - PAST ONLY
+    result["lag_7"] = result[target].shift(7)
+    result["lag_30"] = result[target].shift(30)
+    result["lag_90"] = result[target].shift(90)
+    
+    # Rolling mean features - PAST ONLY (shift to exclude current row)
+    result["rolling_mean_7"] = result[target].shift(1).rolling(window=7, min_periods=1).mean()
+    result["rolling_mean_30"] = result[target].shift(1).rolling(window=30, min_periods=1).mean()
+    result["rolling_mean_90"] = result[target].shift(1).rolling(window=90, min_periods=1).mean()
+    
+    # Booking velocity (cumulative bookings per day position) - NO leakage
+    result["booking_velocity"] = result[status].cumsum() / (result.index + 1)
+    
+    # Occupancy trend (rolling occupancy change) - NO leakage (uses status, not target)
+    occ_7 = result[status].rolling(window=7, min_periods=1).mean()
+    occ_30 = result[status].rolling(window=30, min_periods=1).mean()
+    result["occupancy_trend"] = occ_7 - occ_30
+    
+    # ADR trend (rolling ADR change) - PAST ONLY
+    adr_7 = result[target].shift(1).rolling(window=7, min_periods=1).mean()
+    adr_30 = result[target].shift(1).rolling(window=30, min_periods=1).mean()
+    result["adr_trend"] = adr_7 - adr_30
+    
+    # Pace (bookings in last 7 days vs last 30 days) - NO leakage
+    pace_7 = result[status].rolling(window=7, min_periods=1).sum()
+    pace_30 = result[status].rolling(window=30, min_periods=1).sum()
+    result["pace"] = pace_7 / (pace_30 + 1)
+    
+    # Pickup (recent price change) - PAST ONLY
+    result["pickup"] = result[target].shift(1).diff(7).fillna(0)
+    
+    # Fill NaN with forward fill then 0
+    lag_cols = ["lag_7", "lag_30", "lag_90", "rolling_mean_7", "rolling_mean_30", 
+                "rolling_mean_90", "booking_velocity", "occupancy_trend", "adr_trend", "pace", "pickup"]
+    for col in lag_cols:
+        result[col] = result[col].fillna(0)
+    
+    return result
+
+
 def build_all_features(df: pd.DataFrame) -> pd.DataFrame:
-    """Build all Phase 1 features."""
+    """Build all Phase 1 + Phase 2 features."""
     result = df.copy()
     result = build_temporal_features(result)
     result = build_booking_behavior_features(result)
+    result = build_temporal_aggregate_features(result)
     return result
 
 

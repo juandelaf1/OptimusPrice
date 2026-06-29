@@ -1,0 +1,524 @@
+# Feature Registry
+
+**Generated**: June 2026
+**Status**: Design phase
+**Purpose**: Track all features, their status, and lineage
+
+---
+
+## Current Features (27)
+
+```yaml
+current:
+  temporal:
+    - name: lead_time
+      type: int
+      source: dataset
+      status: active
+      importance: high
+
+    - name: arrival_year
+      type: int
+      source: dataset
+      status: active
+      importance: high
+
+    - name: arrival_month
+      type: int
+      source: dataset
+      status: active
+      importance: high
+
+    - name: arrival_date
+      type: int
+      source: dataset
+      status: active
+      importance: medium
+
+    - name: arrival_week_number
+      type: int
+      source: dataset
+      status: deprecated
+      reason: "99.5% correlated with arrival_month"
+      removed_in: sprint-3
+
+    - name: arrival_day_of_week
+      type: int
+      source: dataset
+      status: active
+      importance: low
+
+  stay:
+    - name: stays_in_weekend_nights
+      type: int
+      source: dataset
+      status: active
+      importance: low
+
+    - name: stays_in_week_nights
+      type: int
+      source: dataset
+      status: deprecated
+      reason: "Subset of total_nights"
+      removed_in: sprint-3
+
+    - name: total_nights
+      type: int
+      source: derived
+      status: deprecated
+      reason: "Linear combination of weekend + week nights"
+      removed_in: sprint-3
+
+  guest:
+    - name: total_guests
+      type: float
+      source: derived
+      status: active
+      importance: high
+
+    - name: adults
+      type: int
+      source: dataset
+      status: active
+      importance: medium
+
+    - name: children
+      type: float
+      source: dataset
+      status: active
+      importance: medium
+
+    - name: babies
+      type: int
+      source: dataset
+      status: active
+      importance: low
+
+  booking_behavior:
+    - name: is_repeated_guest
+      type: int
+      source: dataset
+      status: active
+      importance: medium
+
+    - name: previous_cancellations
+      type: int
+      source: dataset
+      status: active
+      importance: medium
+
+    - name: previous_bookings_not_canceled
+      type: int
+      source: dataset
+      status: active
+      importance: low
+
+    - name: booking_changes
+      type: int
+      source: dataset
+      status: active
+      importance: low
+
+    - name: days_in_waiting_list
+      type: int
+      source: dataset
+      status: active
+      importance: low
+
+  service:
+    - name: required_car_parking_spaces
+      type: int
+      source: dataset
+      status: active
+      importance: low
+
+    - name: total_of_special_requests
+      type: int
+      source: dataset
+      status: active
+      importance: medium
+
+  categorical:
+    - name: room_type_value
+      type: int
+      source: encoded
+      status: active
+      importance: high
+
+    - name: meal_plan_value
+      type: int
+      source: encoded
+      status: active
+      importance: medium
+
+    - name: market_segment_value
+      type: float
+      source: encoded
+      status: active
+      importance: high
+
+    - name: distribution_channel_value
+      type: int
+      source: encoded
+      status: active
+      importance: medium
+
+    - name: customer_type_value
+      type: int
+      source: encoded
+      status: active
+      importance: low
+
+    - name: deposit_type_value
+      type: int
+      source: encoded
+      status: active
+      importance: medium
+
+  target:
+    - name: avg_price_per_room
+      type: float
+      source: dataset
+      status: target
+      importance: N/A
+
+    - name: booking_status_Not_Canceled
+      type: int
+      source: dataset
+      status: active
+      importance: medium
+```
+
+## Candidate Features (49)
+
+```yaml
+candidates:
+  temporal:
+    - name: season
+      status: pending
+      priority: HIGH
+      expected_impact: +0.01
+
+    - name: quarter
+      status: pending
+      priority: HIGH
+      expected_impact: +0.01
+
+    - name: month_sin
+      status: pending
+      priority: HIGH
+      expected_impact: +0.02
+
+    - name: month_cos
+      status: pending
+      priority: HIGH
+      expected_impact: +0.02
+
+    - name: day_sin
+      status: pending
+      priority: MEDIUM
+      expected_impact: +0.005
+
+    - name: day_cos
+      status: pending
+      priority: MEDIUM
+      expected_impact: +0.005
+
+    - name: is_weekend
+      status: pending
+      priority: HIGH
+      expected_impact: +0.01
+
+    - name: is_month_start
+      status: pending
+      priority: LOW
+      expected_impact: +0.002
+
+    - name: is_month_end
+      status: pending
+      priority: LOW
+      expected_impact: +0.002
+
+  booking_behavior:
+    - name: lead_time_bin
+      status: pending
+      priority: HIGH
+      expected_impact: +0.01
+
+    - name: advance_booking
+      status: pending
+      priority: HIGH
+      expected_impact: +0.01
+
+    - name: stay_length_category
+      status: pending
+      priority: MEDIUM
+      expected_impact: +0.005
+
+    - name: is_short_stay
+      status: pending
+      priority: MEDIUM
+      expected_impact: +0.005
+
+    - name: is_long_stay
+      status: pending
+      priority: MEDIUM
+      expected_impact: +0.005
+
+    - name: has_children
+      status: pending
+      priority: HIGH
+      expected_impact: +0.01
+
+    - name: has_babies
+      status: pending
+      priority: LOW
+      expected_impact: +0.002
+
+    - name: cancellation_history
+      status: pending
+      priority: MEDIUM
+      expected_impact: +0.005
+
+    - name: loyalty_score
+      status: pending
+      priority: MEDIUM
+      expected_impact: +0.005
+
+  demand_indicators:
+    - name: weekend_ratio
+      status: pending
+      priority: HIGH
+      expected_impact: +0.02
+
+    - name: guest_density
+      status: pending
+      priority: MEDIUM
+      expected_impact: +0.01
+
+    - name: booking_intensity
+      status: pending
+      priority: LOW
+      expected_impact: +0.002
+
+    - name: special_request_rate
+      status: pending
+      priority: MEDIUM
+      expected_impact: +0.005
+
+    - name: parking_rate
+      status: pending
+      priority: LOW
+      expected_impact: +0.002
+
+    - name: wait_ratio
+      status: pending
+      priority: LOW
+      expected_impact: +0.002
+
+    - name: cancellation_ratio
+      status: pending
+      priority: MEDIUM
+      expected_impact: +0.005
+
+  interactions:
+    - name: room_market
+      status: pending
+      priority: MEDIUM
+      expected_impact: +0.005
+
+    - name: room_customer
+      status: pending
+      priority: LOW
+      expected_impact: +0.002
+
+    - name: lead_time_market
+      status: pending
+      priority: LOW
+      expected_impact: +0.002
+
+    - name: guests_total_nights
+      status: pending
+      priority: MEDIUM
+      expected_impact: +0.005
+
+    - name: month_room
+      status: pending
+      priority: LOW
+      expected_impact: +0.002
+
+  historical_aggregates:
+    - name: rolling_occupancy_7d
+      status: pending
+      priority: HIGH
+      expected_impact: +0.03
+      requires_temporal: true
+
+    - name: rolling_occupancy_30d
+      status: pending
+      priority: HIGH
+      expected_impact: +0.03
+      requires_temporal: true
+
+    - name: rolling_adr_7d
+      status: pending
+      priority: HIGH
+      expected_impact: +0.05
+      leakage_risk: true
+      requires_temporal: true
+
+    - name: rolling_adr_30d
+      status: pending
+      priority: HIGH
+      expected_impact: +0.05
+      leakage_risk: true
+      requires_temporal: true
+
+    - name: rolling_booking_pace_7d
+      status: pending
+      priority: MEDIUM
+      expected_impact: +0.02
+      requires_temporal: true
+
+    - name: rolling_booking_pace_30d
+      status: pending
+      priority: MEDIUM
+      expected_impact: +0.02
+      requires_temporal: true
+
+    - name: lag_price_7d
+      status: pending
+      priority: HIGH
+      expected_impact: +0.03
+      leakage_risk: true
+      requires_temporal: true
+
+    - name: lag_price_30d
+      status: pending
+      priority: HIGH
+      expected_impact: +0.03
+      leakage_risk: true
+      requires_temporal: true
+
+    - name: lag_price_90d
+      status: pending
+      priority: MEDIUM
+      expected_impact: +0.02
+      leakage_risk: true
+      requires_temporal: true
+
+  competitor:
+    - name: competitor_avg_price
+      status: placeholder
+      priority: HIGH
+      expected_impact: +0.05
+      blocked_by: no_data_source
+
+    - name: competitor_min_price
+      status: placeholder
+      priority: HIGH
+      expected_impact: +0.03
+      blocked_by: no_data_source
+
+    - name: competitor_max_price
+      status: placeholder
+      priority: HIGH
+      expected_impact: +0.03
+      blocked_by: no_data_source
+
+    - name: price_vs_competitor
+      status: placeholder
+      priority: HIGH
+      expected_impact: +0.05
+      blocked_by: no_data_source
+
+    - name: competitor_count
+      status: placeholder
+      priority: MEDIUM
+      expected_impact: +0.02
+      blocked_by: no_data_source
+
+  weather_events:
+    - name: temperature
+      status: placeholder
+      priority: MEDIUM
+      expected_impact: +0.02
+      blocked_by: no_data_source
+
+    - name: precipitation
+      status: placeholder
+      priority: LOW
+      expected_impact: +0.01
+      blocked_by: no_data_source
+
+    - name: is_holiday
+      status: placeholder
+      priority: MEDIUM
+      expected_impact: +0.02
+      blocked_by: no_data_source
+
+    - name: is_event
+      status: placeholder
+      priority: MEDIUM
+      expected_impact: +0.02
+      blocked_by: no_data_source
+
+    - name: event_type
+      status: placeholder
+      priority: LOW
+      expected_impact: +0.01
+      blocked_by: no_data_source
+```
+
+## Feature Lineage
+
+```yaml
+lineage:
+  total_guests:
+    parents: [adults, children, babies]
+    formula: "adults + children + babies"
+
+  total_nights:
+    parents: [stays_in_weekend_nights, stays_in_week_nights]
+    formula: "stays_in_weekend_nights + stays_in_week_nights"
+    status: deprecated
+
+  season:
+    parents: [arrival_month]
+    formula: "month_to_season(arrival_month)"
+
+  quarter:
+    parents: [arrival_month]
+    formula: "(arrival_month - 1) // 3 + 1"
+
+  month_sin:
+    parents: [arrival_month]
+    formula: "sin(2 * pi * arrival_month / 12)"
+
+  month_cos:
+    parents: [arrival_month]
+    formula: "cos(2 * pi * arrival_month / 12)"
+```
+
+---
+
+## Summary
+
+| Category | Current | Candidates | Total |
+|----------|---------|------------|-------|
+| Temporal | 5 | 9 | 14 |
+| Stay | 3 | 0 | 3 |
+| Guest | 4 | 0 | 4 |
+| Booking Behavior | 6 | 9 | 15 |
+| Service | 2 | 0 | 2 |
+| Categorical | 6 | 0 | 6 |
+| Demand Indicators | 0 | 7 | 7 |
+| Interactions | 0 | 5 | 5 |
+| Historical Aggregates | 0 | 9 | 9 |
+| Competitor | 0 | 5 | 5 |
+| Weather & Events | 0 | 5 | 5 |
+| **Total** | **27** | **49** | **76** |
+
+---
+
+*Generated by Sprint 4 feature engineering design*

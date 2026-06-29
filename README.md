@@ -16,51 +16,90 @@
 
 ---
 
-## What This Is
+## V1 — FROZEN (Research Prototype)
 
-**Optimus Price** is a machine learning system that predicts hotel room prices based on historical booking data. It uses a simple, interpretable ElasticNet model trained on real booking data from Kaggle.
-
-**This is a research prototype, not a production system.**
-
----
-
-## Current State (V1 — FROZEN)
+**V1 is frozen. No further development.** Historical Kaggle baseline only.
 
 | Metric | Value |
 |--------|-------|
 | **Champion Model** | ElasticNet (alpha=0.024, l1_ratio=0.725) |
-| **R²** | 0.3467 |
-| **RMSE** | 31.63 |
-| **MAE** | 24.39 |
-| **MAPE** | 23.83% |
-| **Features** | 27 (label-encoded) |
-| **Dataset** | 117,429 bookings (Kaggle) |
-| **UI** | Streamlit |
+| **Scaler** | None (NoScaler) |
+| **R²** | 0.3594 |
+| **RMSE** | 31.48 |
+| **MAE** | 24.22 |
+| **MAPE** | 23.87% |
+| **Gap R²** | 0.004 (no overfitting) |
+| **Features** | 27 raw (no engineering) |
+| **Dataset** | 117,429 bookings (Kaggle, Portugal) |
 | **Maturity** | Research Prototype |
 
-**V1 is FROZEN** — No further development. Historical Kaggle baseline only.
+### Why NoScaler?
+
+| Scaler | Test RMSE | R² | Gap R² |
+|--------|:---------:|:--:|:------:|
+| **NoScaler** | **31.48** | **0.359** | **0.004** |
+| StandardScaler | 31.63 | 0.353 | 0.009 |
+| RobustScaler | 31.68 | 0.351 | 0.011 |
+| MinMaxScaler | 32.21 | 0.329 | 0.004 |
+
+### Why Feature Engineering Failed
+
+| Approach | RMSE | R² | Gap R² |
+|----------|:----:|:--:|:------:|
+| 27 raw features | **31.48** | **0.359** | **0.004** |
+| + 19 engineered features | 31.95 | 0.340 | 0.213 |
+| + 9 INE Baleares features | 34.22 | 0.243 | 0.306 |
+
+**Root cause**: The Kaggle dataset has limited signal. All 27 raw features already capture the available information optimally. Engineered features add redundant noise. INE Baleares data is for a different geography (Portugal vs Spain).
+
+### Overfitting Analysis
+
+| Model | Train R² | Test R² | Gap R² | Verdict |
+|-------|:--------:|:-------:|:------:|---------|
+| ElasticNet | 0.362 | 0.359 | 0.004 | ✅ No overfitting |
+| GradientBoosting | 0.832 | 0.135 | 0.697 | 🔴 Severe |
 
 ---
 
-## V2 Status — Market Intelligence (IN PROGRESS)
+## V2 — Market Intelligence (IN PROGRESS)
+
+**Strategy**: Multi-fuente (INE primary, Google Trends proxy, user data)
 
 | Component | Status |
 |-----------|--------|
-| **Data Model Redesign** | ✅ Complete — `market_index`, `price_bands`, `demand_signals`, `seasonality_index` |
-| **INE Ingester** | ✅ Complete — Parses CSV, creates seasonality_index |
-| **Google Trends Ingester** | ✅ Complete — Parses CSV exports |
-| **Market Context Provider** | ✅ Complete — Connects V2 to V1 predictions |
-| **V2 Database** | ✅ Complete — SQLite, 4 tables, segment-aware |
-| **V2 Tests** | ✅ 10/10 passing |
-| **Real Data Ingestion** | 🔄 **IN PROGRESS** — INE API (table 2066), IBESTAT, CAIB open data |
-| **V2 Dashboard** | ❌ Rejected by user — needs rebuild |
-| **OTA Scraping** | ❌ **ABANDONED** — All 12 attempts returned empty (JS SPA + anti-bot) |
+| Data model | ✅ Complete (market_index, price_bands, demand_signals, seasonality_index) |
+| INE Ingester | ✅ Complete |
+| Google Trends Ingester | ✅ Complete |
+| Market Context Provider | ✅ Complete |
+| V2 Tests | ✅ 10/10 passing |
+| INE Baleares data | ✅ Downloaded (occupancy, prices 1998-2026) |
+| Real data ingestion | 🔄 Pending |
+| V2 Dashboard | ❌ Rejected — needs rebuild |
+| OTA Scraping | ❌ Abandoned (JS SPA + anti-bot) |
 
-**V2 Strategy**: Multi-fuente (INE primary, Google Trends proxy, Airbnb limited, user data manual)
+**V2 needs real Baleares hotel price data to leverage INE occupancy data.**
 
 ---
 
-## Quick Start (V1)
+## Architecture
+
+```
+src/optimus_price/             V1 — FROZEN
+  training.py                  ElasticNet + NoScaler
+  feature_builder.py           Feature engineering (NOT USED in V1)
+  prediction_service.py        V1 + optional V2 context
+  time_series_enricher.py      Seasonal decomposition (Phase 3)
+
+src/v2_pipeline/               V2 — IN PROGRESS
+  market_db.py                 4-table schema
+  ine_ingester.py              INE CSV parser
+  gtrends_ingester.py          Google Trends parser
+  market_context.py            V2 context for V1
+```
+
+---
+
+## Quick Start (V1 Frozen)
 
 ```bash
 git clone https://github.com/juandelaf1/OptimusPrice.git
@@ -76,178 +115,18 @@ streamlit run app_streamlit/app_cliente.py
 
 ---
 
-## Architecture
-
-```
-Optimus_Price_Final/
-├── src/optimus_price/           # V1 — FROZEN
-│   ├── training.py              # Model training (ElasticNet champion)
-│   ├── data_processing.py       # Data loading and cleaning
-│   ├── feature_builder.py       # Feature engineering (27 features)
-│   ├── evaluation.py            # Model evaluation
-│   ├── occupancy_model.py       # Occupancy prediction (V2 stub)
-│   ├── elasticity_engine.py     # Price elasticity (V2 stub)
-│   ├── revenue_optimizer.py     # Revenue optimization (V2 stub)
-│   ├── prediction_service.py    # V1 + optional V2 market_context
-│   └── time_series_enricher.py  # Seasonal decomposition (Phase 3)
-├── src/v2_pipeline/             # V2 — IN PROGRESS
-│   ├── market_db.py             # 4-table schema (market_index, price_bands, demand_signals, seasonality_index)
-│   ├── ine_ingester.py          # INE CSV parser + seasonality
-│   ├── gtrends_ingester.py      # Google Trends CSV parser
-│   ├── market_context.py        # V2 context for V1 predictions
-│   ├── aggregator.py            # Market aggregates computation
-│   ├── validator.py             # Data validation
-│   └── ingester.py              # Legacy (market_prices table)
-├── app_streamlit/
-│   ├── app_cliente.py           # V1 dashboard with market context tab
-│   └── app_market_intelligence.py  # V2 dashboard (REJECTED — needs rebuild)
-├── models/                      # Trained models
-├── data/
-│   ├── processed/               # V1: hotel_reservations_real.csv
-│   └── v2_market/               # V2: raw/ + processed/market_intelligence.db
-├── scripts/                     # Analysis & training scripts
-├── docs/                        # Documentation
-├── tests/
-│   └── test_v2_pipeline.py      # 10 tests passing
-└── archive/                     # Dead V2 code (scraping, monitoring, etc.)
-```
-
----
-
-## V1 ML Pipeline
-
-1. **Data Loading** — `hotel_reservations_real.csv` (117K rows, 27 features)
-2. **Feature Engineering** — Temporal features (sin/cos encoding), booking behavior
-3. **Training** — ElasticNet with StandardScaler pipeline (Optuna optimized)
-4. **Validation** — Temporal split (80/20), TimeSeriesSplit (3-fold), Rolling window
-5. **Evaluation** — RMSE, MAE, R², MAPE vs baselines
-
----
-
-## Why ElasticNet Wins
-
-| Model | R² | RMSE | Notes |
-|-------|-----|------|-------|
-| **ElasticNet (optimized)** | **0.3467** | **31.63** | **Champion — interpretable, fast, small** |
-| GradientBoosting | 0.1428 | 36.41 | Overfits, worse than linear |
-| LightGBM | 0.1512 | 36.23 | Overfits |
-| XGBoost | 0.1411 | 36.45 | Overfits |
-| CatBoost | 0.1118 | 37.06 | Overfits |
-| RandomForest | -0.0249 | 39.82 | Negative R² |
-
-**Root cause**: Weak nonlinear signal + multicollinearity (arrival_month/week_number r=0.995). Tree models overfit 48x more than ElasticNet.
-
----
-
-## V2 Phases Completed
-
-### Phase 2: Baseline Comparison ✅
-- ML (ElasticNet RMSE=31.79) vs 5 baselines
-- Best baseline: Room Type RMSE=36.97
-- **ML improves +14% RMSE, +0.23 R²**
-
-### Phase 3: Time-Series Enrichment ✅
-- `time_series_enricher.py`: Additive decomposition, cyclical encoding, seasonal factors
-- **Marginal impact (+0%)** — arrival_month already captures seasonality
-
-### Phase 6: Hyperparameter Optimization ✅
-- Optuna 10-trial search
-- Optimized: alpha=0.024, l1_ratio=0.725
-- **RMSE=31.63 (+0.5% improvement)**
-
----
-
-## V2 Documentation
+## Documentation
 
 | Document | Status |
 |----------|--------|
-| `docs/V2_REALITY_ASSESSMENT.md` | Complete — 25% maturity, scraping broken |
-| `docs/V2_DATA_MODEL_REDESIGN.md` | Complete — New 4-table model |
-| `docs/V2_SOURCE_STRATEGY.md` | Complete — Multi-fuente strategy |
-| `docs/v2_market_map.md` | Complete — 6 Mallorca segments |
-| `docs/v2_readiness_checklist.md` | Complete — 52 items |
-
----
-
-## V2 Data Sources (Target)
-
-| Source | Data | Status |
-|--------|------|--------|
-| **INE API** (table 2066) | Occupancy by CCAA, establishments, beds | 🔄 Downloading |
-| **IBESTAT** | Monthly hotel survey: open establishments, plazas, travelers, overnight stays, occupancy, ADR, RevPAR | 🔄 Downloading |
-| **Portal Estadísticas Govern CAIB** | 2008-2024 historical series | 🔄 Downloading |
-| **Datos Abiertos CAIB** | Open data catalog | 🔄 Exploring |
-| **FEHM** | Hotel federation data | 🔄 Exploring |
-| **Google Trends** | Search interest (demand proxy) | ✅ Ingester ready |
-| **Airbnb (limited)** | Listing prices (auxiliary) | ✅ Ingester ready |
-
----
-
-## Limitations (V1)
-
-1. **R² is low (0.35)** — Dataset lacks location, brand, star rating features
-2. **No live competitor data** — OTAs are JS SPAs, cannot be scraped
-3. **No real-time pricing** — Batch training only
-4. **No revenue optimization** — Predicts price, doesn't optimize revenue
-5. **No model interpretability** — SHAP not yet implemented
-6. **No drift monitoring** — Model degrades silently
-
----
-
-## Deployment
-
-```bash
-docker build -t optimus-price .
-docker run -p 8501:8501 optimus-price
-```
-
----
-
-## Documentation
-
-| Document | Status | Description |
-|----------|--------|-------------|
-| `AGENTS.md` | **Current** | Operational handbook |
-| `roadmap.md` | **Current** | Product roadmap |
-| `docs/TECHNICAL_AUDIT.md` | **Current** | Full technical audit |
-| `docs/leakage_assessment.md` | **Current** | Leakage validation |
-| `docs/champion_model_report.md` | **Current** | Model specification |
-| `docs/benchmark_final.md` | **Current** | Model comparison |
-| `docs/V2_REALITY_ASSESSMENT.md` | **Current** | V2 audit — scraping dead |
-| `docs/V2_DATA_MODEL_REDESIGN.md` | **Current** | New V2 data model |
-| `docs/V2_SOURCE_STRATEGY.md` | **Current** | Multi-fuente strategy |
-| `docs/PRODUCT_SPEC.md` | **Archived** | V2 Vision (not implemented) |
-| `docs/DESIGN_SYSTEM.md` | **Archived** | V2 Design (not implemented) |
-
----
-
-## Contributing
-
-### Code Style
-
-- Python 3.8+
-- Type hints preferred
-- Follow existing patterns
-
-### Testing
-
-```bash
-pytest tests/ -v
-```
-
-### Commit Convention
-
-```
-docs: documentation changes
-fix: bug fixes
-feat: new features
-ml: model changes
-```
+| `AGENTS.md` | **V1 Frozen** |
+| `roadmap.md` | **V1 Frozen** |
+| `docs/V2_REALITY_ASSESSMENT.md` | V2 audit |
+| `docs/V2_DATA_MODEL_REDESIGN.md` | V2 data model |
+| `docs/V2_SOURCE_STRATEGY.md` | Multi-fuente strategy |
 
 ---
 
 <p align="center">
-  <sub>Built with Python, Pandas, Scikit-Learn, and Streamlit</sub><br>
-  <sub>Juan de la Fuente — juandelafuentelarrocca@gmail.com</sub><br>
-  <sub>Version 1.0 — June 2026</sub>
+  <sub>Version 1.0 — V1 Frozen. June 2026</sub>
 </p>

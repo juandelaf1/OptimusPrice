@@ -1,0 +1,266 @@
+[
+  {
+    "rank": 1,
+    "feature": "room_type_value",
+    "coefficient": 11.146694,
+    "target_derived": false
+  },
+  {
+    "rank": 2,
+    "feature": "month_sin",
+    "coefficient": -9.588131,
+    "target_derived": false
+  },
+  {
+    "rank": 3,
+    "feature": "arrival_year",
+    "coefficient": 8.646966,
+    "target_derived": false
+  },
+  {
+    "rank": 4,
+    "feature": "lead_time",
+    "coefficient": -8.474837,
+    "target_derived": false
+  },
+  {
+    "rank": 5,
+    "feature": "week_cos",
+    "coefficient": -8.138016,
+    "target_derived": false
+  },
+  {
+    "rank": 6,
+    "feature": "children",
+    "coefficient": 7.453694,
+    "target_derived": false
+  },
+  {
+    "rank": 7,
+    "feature": "total_guests",
+    "coefficient": 6.811874,
+    "target_derived": false
+  },
+  {
+    "rank": 8,
+    "feature": "week_sin",
+    "coefficient": -6.275001,
+    "target_derived": false
+  },
+  {
+    "rank": 9,
+    "feature": "market_segment_value",
+    "coefficient": -5.575253,
+    "target_derived": false
+  },
+  {
+    "rank": 10,
+    "feature": "days_until_peak",
+    "coefficient": -5.112885,
+    "target_derived": false
+  },
+  {
+    "rank": 11,
+    "feature": "deposit_type_value",
+    "coefficient": 4.59036,
+    "target_derived": false
+  },
+  {
+    "rank": 12,
+    "feature": "booking_status_Not_Canceled",
+    "coefficient": -4.435885,
+    "target_derived": false
+  },
+  {
+    "rank": 13,
+    "feature": "is_high_season",
+    "coefficient": -3.606301,
+    "target_derived": false
+  },
+  {
+    "rank": 14,
+    "feature": "meal_plan_value",
+    "coefficient": 3.45598,
+    "target_derived": false
+  },
+  {
+    "rank": 15,
+    "feature": "season",
+    "coefficient": -3.224899,
+    "target_derived": false
+  },
+  {
+    "rank": 16,
+    "feature": "room_intensity",
+    "coefficient": -2.957948,
+    "target_derived": false
+  },
+  {
+    "rank": 17,
+    "feature": "month_cos",
+    "coefficient": -2.892742,
+    "target_derived": false
+  },
+  {
+    "rank": 18,
+    "feature": "adults",
+    "coefficient": 2.710452,
+    "target_derived": false
+  },
+  {
+    "rank": 19,
+    "feature": "arrival_month",
+    "coefficient": 2.520389,
+    "target_derived": false
+  },
+  {
+    "rank": 20,
+    "feature": "distribution_channel_value",
+    "coefficient": 2.2918,
+    "target_derived": false
+  },
+  {
+    "rank": 21,
+    "feature": "medium_stay",
+    "coefficient": 2.081602,
+    "target_derived": false
+  },
+  {
+    "rank": 22,
+    "feature": "quarter",
+    "coefficient": -2.072905,
+    "target_derived": false
+  },
+  {
+    "rank": 23,
+    "feature": "total_of_special_requests",
+    "coefficient": 2.017142,
+    "target_derived": false
+  },
+  {
+    "rank": 24,
+    "feature": "arrival_week_number",
+    "coefficient": 1.996308,
+    "target_derived": false
+  },
+  {
+    "rank": 25,
+    "feature": "long_stay",
+    "coefficient": -1.874996,
+    "target_derived": false
+  },
+  {
+    "rank": 26,
+    "feature": "booking_window",
+    "coefficient": -1.818477,
+    "target_derived": false
+  },
+  {
+    "rank": 27,
+    "feature": "is_repeated_guest",
+    "coefficient": -1.669406,
+    "target_derived": false
+  },
+  {
+    "rank": 28,
+    "feature": "days_in_waiting_list",
+    "coefficient": 1.668732,
+    "target_derived": false
+  },
+  {
+    "rank": 29,
+    "feature": "guest_density",
+    "coefficient": -1.577702,
+    "target_derived": false
+  },
+  {
+    "rank": 30,
+    "feature": "arrival_date",
+    "coefficient": 1.334435,
+    "target_derived": false
+  },
+  {
+    "rank": 31,
+    "feature": "booking_changes",
+    "coefficient": 1.195852,
+    "target_derived": false
+  },
+  {
+    "rank": 32,
+    "feature": "customer_type_value",
+    "coefficient": -1.160784,
+    "target_derived": false
+  },
+  {
+    "rank": 33,
+    "feature": "previous_cancellations",
+    "coefficient": -1.082893,
+    "target_derived": false
+  },
+  {
+    "rank": 34,
+    "feature": "stays_in_weekend_nights",
+    "coefficient": -1.063376,
+    "target_derived": false
+  },
+  {
+    "rank": 35,
+    "feature": "stay_bucket",
+    "coefficient": -0.922606,
+    "target_derived": false
+  },
+  {
+    "rank": 36,
+    "feature": "previous_bookings_not_canceled",
+    "coefficient": -0.903092,
+    "target_derived": false
+  },
+  {
+    "rank": 37,
+    "feature": "stays_in_week_nights",
+    "coefficient": 0.754138,
+    "target_derived": false
+  },
+  {
+    "rank": 38,
+    "feature": "required_car_parking_spaces",
+    "coefficient": 0.68036,
+    "target_derived": false
+  },
+  {
+    "rank": 39,
+    "feature": "lead_time_bin",
+    "coefficient": -0.365572,
+    "target_derived": false
+  },
+  {
+    "rank": 40,
+    "feature": "short_stay",
+    "coefficient": -0.160809,
+    "target_derived": false
+  },
+  {
+    "rank": 41,
+    "feature": "babies",
+    "coefficient": -0.023274,
+    "target_derived": false
+  },
+  {
+    "rank": 42,
+    "feature": "arrival_day_of_week",
+    "coefficient": -0.0,
+    "target_derived": false
+  },
+  {
+    "rank": 43,
+    "feature": "total_nights",
+    "coefficient": 0.0,
+    "target_derived": false
+  },
+  {
+    "rank": 44,
+    "feature": "is_weekend_arrival",
+    "coefficient": -0.0,
+    "target_derived": false
+  }
+]

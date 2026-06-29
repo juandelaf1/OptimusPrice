@@ -1,4 +1,3 @@
-from .data_generator import HotelDataGenerator
 from .data_processing import load_and_clean_data, prepare_features, run_pipeline
 from .training import (
     load_processed_data, train_test_split_temporal, build_pipeline,
@@ -10,3 +9,6 @@ from .evaluation import (
     feature_importance_df, plot_feature_importance,
     plot_residuals, plot_predicted_vs_actual, save_metrics_report
 )
+from .occupancy_model import OccupancyPredictor, train_occupancy_model
+from .elasticity_engine import PriceElasticityEngine, run_elasticity_analysis
+from .revenue_optimizer import RevenueOptimizer, run_revenue_optimization

@@ -1,0 +1,1126 @@
+{
+  "real": {
+    "shape": {
+      "rows": 117429,
+      "columns": 28
+    },
+    "correlations": {
+      "high_correlation_pairs": [
+        {
+          "feature_a": "arrival_month",
+          "feature_b": "arrival_week_number",
+          "correlation": 0.9951,
+          "abs_correlation": 0.9951
+        },
+        {
+          "feature_a": "stays_in_week_nights",
+          "feature_b": "total_nights",
+          "correlation": 0.9395,
+          "abs_correlation": 0.9395
+        },
+        {
+          "feature_a": "total_guests",
+          "feature_b": "adults",
+          "correlation": 0.7697,
+          "abs_correlation": 0.7697
+        },
+        {
+          "feature_a": "stays_in_weekend_nights",
+          "feature_b": "total_nights",
+          "correlation": 0.7588,
+          "abs_correlation": 0.7588
+        }
+      ],
+      "target_correlations": [
+        {
+          "feature": "total_guests",
+          "correlation_with_target": 0.4356,
+          "abs_correlation": 0.4356
+        },
+        {
+          "feature": "room_type_value",
+          "correlation_with_target": 0.4354,
+          "abs_correlation": 0.4354
+        },
+        {
+          "feature": "children",
+          "correlation_with_target": 0.3532,
+          "abs_correlation": 0.3532
+        },
+        {
+          "feature": "adults",
+          "correlation_with_target": 0.2851,
+          "abs_correlation": 0.2851
+        },
+        {
+          "feature": "market_segment_value",
+          "correlation_with_target": -0.2336,
+          "abs_correlation": 0.2336
+        },
+        {
+          "feature": "arrival_year",
+          "correlation_with_target": 0.2062,
+          "abs_correlation": 0.2062
+        },
+        {
+          "feature": "total_of_special_requests",
+          "correlation_with_target": 0.1913,
+          "abs_correlation": 0.1913
+        },
+        {
+          "feature": "customer_type_value",
+          "correlation_with_target": -0.1642,
+          "abs_correlation": 0.1642
+        },
+        {
+          "feature": "deposit_type_value",
+          "correlation_with_target": -0.1143,
+          "abs_correlation": 0.1143
+        },
+        {
+          "feature": "is_repeated_guest",
+          "correlation_with_target": -0.1032,
+          "abs_correlation": 0.1032
+        },
+        {
+          "feature": "arrival_month",
+          "correlation_with_target": 0.0932,
+          "abs_correlation": 0.0932
+        },
+        {
+          "feature": "lead_time",
+          "correlation_with_target": -0.091,
+          "abs_correlation": 0.091
+        },
+        {
+          "feature": "arrival_week_number",
+          "correlation_with_target": 0.0892,
+          "abs_correlation": 0.0892
+        },
+        {
+          "feature": "previous_cancellations",
+          "correlation_with_target": -0.0713,
+          "abs_correlation": 0.0713
+        },
+        {
+          "feature": "previous_bookings_not_canceled",
+          "correlation_with_target": -0.0641,
+          "abs_correlation": 0.0641
+        },
+        {
+          "feature": "required_car_parking_spaces",
+          "correlation_with_target": 0.0614,
+          "abs_correlation": 0.0614
+        },
+        {
+          "feature": "total_nights",
+          "correlation_with_target": 0.0503,
+          "abs_correlation": 0.0503
+        },
+        {
+          "feature": "stays_in_week_nights",
+          "correlation_with_target": 0.0486,
+          "abs_correlation": 0.0486
+        },
+        {
+          "feature": "days_in_waiting_list",
+          "correlation_with_target": -0.0466,
+          "abs_correlation": 0.0466
+        },
+        {
+          "feature": "booking_changes",
+          "correlation_with_target": 0.0373,
+          "abs_correlation": 0.0373
+        },
+        {
+          "feature": "stays_in_weekend_nights",
+          "correlation_with_target": 0.0357,
+          "abs_correlation": 0.0357
+        },
+        {
+          "feature": "babies",
+          "correlation_with_target": 0.0341,
+          "abs_correlation": 0.0341
+        },
+        {
+          "feature": "arrival_date",
+          "correlation_with_target": 0.0311,
+          "abs_correlation": 0.0311
+        },
+        {
+          "feature": "booking_status_Not_Canceled",
+          "correlation_with_target": -0.0309,
+          "abs_correlation": 0.0309
+        },
+        {
+          "feature": "meal_plan_value",
+          "correlation_with_target": 0.029,
+          "abs_correlation": 0.029
+        },
+        {
+          "feature": "distribution_channel_value",
+          "correlation_with_target": -0.0133,
+          "abs_correlation": 0.0133
+        },
+        {
+          "feature": "arrival_day_of_week",
+          "correlation_with_target": -0.0037,
+          "abs_correlation": 0.0037
+        }
+      ],
+      "total_pairs": 378,
+      "high_corr_count": 4
+    },
+    "leakage": {
+      "leakage_candidates": [
+        {
+          "feature": "avg_price_per_room",
+          "abs_correlation": null,
+          "verdict": "TARGET_NAME_MATCH"
+        }
+      ],
+      "total_features_checked": 27
+    },
+    "low_information": {
+      "all_features": [
+        {
+          "feature": "arrival_year",
+          "dtype": "int64",
+          "nunique": 3,
+          "missing_pct": 0.0,
+          "top_value_pct": 47.51,
+          "variance": 0.4992,
+          "cv": 0.0004,
+          "flags": [
+            "LOW_VARIANCE"
+          ]
+        },
+        {
+          "feature": "babies",
+          "dtype": "int64",
+          "nunique": 5,
+          "missing_pct": 0.0,
+          "top_value_pct": 99.24,
+          "variance": 0.0094,
+          "cv": 12.3489,
+          "flags": [
+            "NEAR_CONSTANT"
+          ]
+        },
+        {
+          "feature": "is_repeated_guest",
+          "dtype": "int64",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 97.21,
+          "variance": 0.0271,
+          "cv": 5.9058,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "booking_status_Not_Canceled",
+          "dtype": "int64",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 62.52,
+          "variance": 0.2343,
+          "cv": 0.7742,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "lead_time",
+          "dtype": "int64",
+          "nunique": 478,
+          "missing_pct": 0.0,
+          "top_value_pct": 4.91,
+          "variance": 11429.1647,
+          "cv": 1.0173,
+          "flags": []
+        },
+        {
+          "feature": "arrival_month",
+          "dtype": "int64",
+          "nunique": 12,
+          "missing_pct": 0.0,
+          "top_value_pct": 11.68,
+          "variance": 9.508,
+          "cv": 0.471,
+          "flags": []
+        },
+        {
+          "feature": "arrival_date",
+          "dtype": "int64",
+          "nunique": 31,
+          "missing_pct": 0.0,
+          "top_value_pct": 3.68,
+          "variance": 77.1512,
+          "cv": 0.5558,
+          "flags": []
+        },
+        {
+          "feature": "arrival_week_number",
+          "dtype": "int64",
+          "nunique": 53,
+          "missing_pct": 0.0,
+          "top_value_pct": 3.02,
+          "variance": 184.299,
+          "cv": 0.5003,
+          "flags": []
+        },
+        {
+          "feature": "arrival_day_of_week",
+          "dtype": "int64",
+          "nunique": 7,
+          "missing_pct": 0.0,
+          "top_value_pct": 14.4,
+          "variance": 3.9994,
+          "cv": 0.6658,
+          "flags": []
+        },
+        {
+          "feature": "stays_in_weekend_nights",
+          "dtype": "int64",
+          "nunique": 16,
+          "missing_pct": 0.0,
+          "top_value_pct": 43.0,
+          "variance": 0.9915,
+          "cv": 1.0634,
+          "flags": []
+        },
+        {
+          "feature": "stays_in_week_nights",
+          "dtype": "int64",
+          "nunique": 32,
+          "missing_pct": 0.0,
+          "top_value_pct": 28.4,
+          "variance": 3.5863,
+          "cv": 0.7511,
+          "flags": []
+        },
+        {
+          "feature": "total_guests",
+          "dtype": "float64",
+          "nunique": 8,
+          "missing_pct": 0.0,
+          "top_value_pct": 69.18,
+          "variance": 0.4189,
+          "cv": 0.3281,
+          "flags": []
+        },
+        {
+          "feature": "total_nights",
+          "dtype": "int64",
+          "nunique": 40,
+          "missing_pct": 0.0,
+          "top_value_pct": 23.23,
+          "variance": 6.4254,
+          "cv": 0.7331,
+          "flags": []
+        },
+        {
+          "feature": "adults",
+          "dtype": "int64",
+          "nunique": 5,
+          "missing_pct": 0.0,
+          "top_value_pct": 75.6,
+          "variance": 0.2324,
+          "cv": 0.2591,
+          "flags": []
+        },
+        {
+          "feature": "children",
+          "dtype": "float64",
+          "nunique": 5,
+          "missing_pct": 0.0,
+          "top_value_pct": 92.76,
+          "variance": 0.1598,
+          "cv": 3.8246,
+          "flags": []
+        },
+        {
+          "feature": "previous_cancellations",
+          "dtype": "int64",
+          "nunique": 15,
+          "missing_pct": 0.0,
+          "top_value_pct": 94.56,
+          "variance": 0.7203,
+          "cv": 9.7601,
+          "flags": []
+        },
+        {
+          "feature": "previous_bookings_not_canceled",
+          "dtype": "int64",
+          "nunique": 73,
+          "missing_pct": 0.0,
+          "top_value_pct": 97.15,
+          "variance": 2.0915,
+          "cv": 11.5387,
+          "flags": []
+        },
+        {
+          "feature": "booking_changes",
+          "dtype": "int64",
+          "nunique": 19,
+          "missing_pct": 0.0,
+          "top_value_pct": 85.07,
+          "variance": 0.4009,
+          "cv": 2.9249,
+          "flags": []
+        },
+        {
+          "feature": "days_in_waiting_list",
+          "dtype": "int64",
+          "nunique": 127,
+          "missing_pct": 0.0,
+          "top_value_pct": 96.88,
+          "variance": 312.4808,
+          "cv": 7.5609,
+          "flags": []
+        },
+        {
+          "feature": "required_car_parking_spaces",
+          "dtype": "int64",
+          "nunique": 5,
+          "missing_pct": 0.0,
+          "top_value_pct": 93.78,
+          "variance": 0.0603,
+          "cv": 3.9201,
+          "flags": []
+        },
+        {
+          "feature": "total_of_special_requests",
+          "dtype": "int64",
+          "nunique": 6,
+          "missing_pct": 0.0,
+          "top_value_pct": 58.88,
+          "variance": 0.6267,
+          "cv": 1.3863,
+          "flags": []
+        },
+        {
+          "feature": "room_type_value",
+          "dtype": "int64",
+          "nunique": 9,
+          "missing_pct": 0.0,
+          "top_value_pct": 72.02,
+          "variance": 2.8642,
+          "cv": 0.8514,
+          "flags": []
+        },
+        {
+          "feature": "meal_plan_value",
+          "dtype": "int64",
+          "nunique": 4,
+          "missing_pct": 0.0,
+          "top_value_pct": 77.33,
+          "variance": 0.8498,
+          "cv": 2.1417,
+          "flags": []
+        },
+        {
+          "feature": "market_segment_value",
+          "dtype": "float64",
+          "nunique": 7,
+          "missing_pct": 0.0,
+          "top_value_pct": 47.78,
+          "variance": 1.2869,
+          "cv": 0.4952,
+          "flags": []
+        },
+        {
+          "feature": "distribution_channel_value",
+          "dtype": "int64",
+          "nunique": 5,
+          "missing_pct": 0.0,
+          "top_value_pct": 82.53,
+          "variance": 0.4447,
+          "cv": 0.3898,
+          "flags": []
+        },
+        {
+          "feature": "customer_type_value",
+          "dtype": "int64",
+          "nunique": 4,
+          "missing_pct": 0.0,
+          "top_value_pct": 75.08,
+          "variance": 0.4349,
+          "cv": 2.0426,
+          "flags": []
+        },
+        {
+          "feature": "deposit_type_value",
+          "dtype": "int64",
+          "nunique": 3,
+          "missing_pct": 0.0,
+          "top_value_pct": 87.44,
+          "variance": 0.1136,
+          "cv": 2.6546,
+          "flags": []
+        }
+      ],
+      "flagged_features": [
+        {
+          "feature": "arrival_year",
+          "dtype": "int64",
+          "nunique": 3,
+          "missing_pct": 0.0,
+          "top_value_pct": 47.51,
+          "variance": 0.4992,
+          "cv": 0.0004,
+          "flags": [
+            "LOW_VARIANCE"
+          ]
+        },
+        {
+          "feature": "babies",
+          "dtype": "int64",
+          "nunique": 5,
+          "missing_pct": 0.0,
+          "top_value_pct": 99.24,
+          "variance": 0.0094,
+          "cv": 12.3489,
+          "flags": [
+            "NEAR_CONSTANT"
+          ]
+        },
+        {
+          "feature": "is_repeated_guest",
+          "dtype": "int64",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 97.21,
+          "variance": 0.0271,
+          "cv": 5.9058,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "booking_status_Not_Canceled",
+          "dtype": "int64",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 62.52,
+          "variance": 0.2343,
+          "cv": 0.7742,
+          "flags": [
+            "BINARY"
+          ]
+        }
+      ],
+      "total_flagged": 4
+    }
+  },
+  "clean": {
+    "shape": {
+      "rows": 34546,
+      "columns": 27
+    },
+    "correlations": {
+      "high_correlation_pairs": [
+        {
+          "feature_a": "arrival_month",
+          "feature_b": "arrival_week_number",
+          "correlation": 0.9885,
+          "abs_correlation": 0.9885
+        }
+      ],
+      "target_correlations": [
+        {
+          "feature": "total_guests",
+          "correlation_with_target": 0.364,
+          "abs_correlation": 0.364
+        },
+        {
+          "feature": "no_of_special_requests",
+          "correlation_with_target": 0.2096,
+          "abs_correlation": 0.2096
+        },
+        {
+          "feature": "arrival_year",
+          "correlation_with_target": 0.178,
+          "abs_correlation": 0.178
+        },
+        {
+          "feature": "repeated_guest",
+          "correlation_with_target": -0.1449,
+          "abs_correlation": 0.1449
+        },
+        {
+          "feature": "no_of_previous_bookings_not_canceled",
+          "correlation_with_target": -0.093,
+          "abs_correlation": 0.093
+        },
+        {
+          "feature": "lead_time",
+          "correlation_with_target": -0.0754,
+          "abs_correlation": 0.0754
+        },
+        {
+          "feature": "arrival_month",
+          "correlation_with_target": 0.0655,
+          "abs_correlation": 0.0655
+        },
+        {
+          "feature": "arrival_week_number",
+          "correlation_with_target": 0.0632,
+          "abs_correlation": 0.0632
+        },
+        {
+          "feature": "required_car_parking_space",
+          "correlation_with_target": 0.0601,
+          "abs_correlation": 0.0601
+        },
+        {
+          "feature": "no_of_previous_cancellations",
+          "correlation_with_target": -0.0573,
+          "abs_correlation": 0.0573
+        },
+        {
+          "feature": "total_nights",
+          "correlation_with_target": -0.0305,
+          "abs_correlation": 0.0305
+        },
+        {
+          "feature": "arrival_date",
+          "correlation_with_target": 0.0009,
+          "abs_correlation": 0.0009
+        },
+        {
+          "feature": "arrival_day_of_week",
+          "correlation_with_target": 0.0006,
+          "abs_correlation": 0.0006
+        }
+      ],
+      "total_pairs": 91,
+      "high_corr_count": 1
+    },
+    "leakage": {
+      "leakage_candidates": [
+        {
+          "feature": "avg_price_per_room",
+          "abs_correlation": null,
+          "verdict": "TARGET_NAME_MATCH"
+        }
+      ],
+      "total_features_checked": 13
+    },
+    "low_information": {
+      "all_features": [
+        {
+          "feature": "room_type_reserved_Room_Type 3",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 99.99,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY",
+            "NEAR_CONSTANT"
+          ]
+        },
+        {
+          "feature": "room_type_reserved_Room_Type 5",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 99.38,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY",
+            "NEAR_CONSTANT"
+          ]
+        },
+        {
+          "feature": "room_type_reserved_Room_Type 7",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 99.94,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY",
+            "NEAR_CONSTANT"
+          ]
+        },
+        {
+          "feature": "market_segment_type_Complementary",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 99.95,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY",
+            "NEAR_CONSTANT"
+          ]
+        },
+        {
+          "feature": "required_car_parking_space",
+          "dtype": "int64",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 97.09,
+          "variance": 0.0283,
+          "cv": 5.7741,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "arrival_year",
+          "dtype": "int64",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 82.21,
+          "variance": 0.1463,
+          "cv": 0.0002,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "repeated_guest",
+          "dtype": "int64",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 97.7,
+          "variance": 0.0224,
+          "cv": 6.5241,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "no_of_previous_cancellations",
+          "dtype": "int64",
+          "nunique": 9,
+          "missing_pct": 0.0,
+          "top_value_pct": 99.13,
+          "variance": 0.136,
+          "cv": 16.7172,
+          "flags": [
+            "NEAR_CONSTANT"
+          ]
+        },
+        {
+          "feature": "type_of_meal_plan_Meal Plan 2",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 91.24,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "type_of_meal_plan_Not Selected",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 85.28,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "room_type_reserved_Room_Type 2",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 98.15,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "room_type_reserved_Room_Type 4",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 83.39,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "room_type_reserved_Room_Type 6",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 98.73,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "market_segment_type_Corporate",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 94.21,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "market_segment_type_Offline",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 69.82,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "market_segment_type_Online",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 63.62,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "booking_status_Not_Canceled",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 66.84,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "lead_time",
+          "dtype": "int64",
+          "nunique": 351,
+          "missing_pct": 0.0,
+          "top_value_pct": 3.22,
+          "variance": 7489.2284,
+          "cv": 0.989,
+          "flags": []
+        },
+        {
+          "feature": "arrival_month",
+          "dtype": "int64",
+          "nunique": 12,
+          "missing_pct": 0.0,
+          "top_value_pct": 14.76,
+          "variance": 9.4703,
+          "cv": 0.4152,
+          "flags": []
+        },
+        {
+          "feature": "arrival_date",
+          "dtype": "int64",
+          "nunique": 31,
+          "missing_pct": 0.0,
+          "top_value_pct": 3.73,
+          "variance": 76.431,
+          "cv": 0.5621,
+          "flags": []
+        },
+        {
+          "feature": "no_of_previous_bookings_not_canceled",
+          "dtype": "int64",
+          "nunique": 59,
+          "missing_pct": 0.0,
+          "top_value_pct": 98.03,
+          "variance": 2.781,
+          "cv": 12.6087,
+          "flags": []
+        },
+        {
+          "feature": "no_of_special_requests",
+          "dtype": "int64",
+          "nunique": 6,
+          "missing_pct": 0.0,
+          "top_value_pct": 54.99,
+          "variance": 0.6029,
+          "cv": 1.2771,
+          "flags": []
+        },
+        {
+          "feature": "total_guests",
+          "dtype": "int64",
+          "nunique": 8,
+          "missing_pct": 0.0,
+          "top_value_pct": 67.9,
+          "variance": 0.3584,
+          "cv": 0.3117,
+          "flags": []
+        },
+        {
+          "feature": "total_nights",
+          "dtype": "int64",
+          "nunique": 24,
+          "missing_pct": 0.0,
+          "top_value_pct": 28.04,
+          "variance": 3.1687,
+          "cv": 0.5855,
+          "flags": []
+        },
+        {
+          "feature": "arrival_day_of_week",
+          "dtype": "int64",
+          "nunique": 7,
+          "missing_pct": 0.0,
+          "top_value_pct": 16.76,
+          "variance": 4.2463,
+          "cv": 0.671,
+          "flags": []
+        },
+        {
+          "feature": "arrival_week_number",
+          "dtype": "int64",
+          "nunique": 52,
+          "missing_pct": 0.0,
+          "top_value_pct": 3.97,
+          "variance": 179.4947,
+          "cv": 0.4421,
+          "flags": []
+        }
+      ],
+      "flagged_features": [
+        {
+          "feature": "room_type_reserved_Room_Type 3",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 99.99,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY",
+            "NEAR_CONSTANT"
+          ]
+        },
+        {
+          "feature": "room_type_reserved_Room_Type 5",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 99.38,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY",
+            "NEAR_CONSTANT"
+          ]
+        },
+        {
+          "feature": "room_type_reserved_Room_Type 7",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 99.94,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY",
+            "NEAR_CONSTANT"
+          ]
+        },
+        {
+          "feature": "market_segment_type_Complementary",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 99.95,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY",
+            "NEAR_CONSTANT"
+          ]
+        },
+        {
+          "feature": "required_car_parking_space",
+          "dtype": "int64",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 97.09,
+          "variance": 0.0283,
+          "cv": 5.7741,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "arrival_year",
+          "dtype": "int64",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 82.21,
+          "variance": 0.1463,
+          "cv": 0.0002,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "repeated_guest",
+          "dtype": "int64",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 97.7,
+          "variance": 0.0224,
+          "cv": 6.5241,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "no_of_previous_cancellations",
+          "dtype": "int64",
+          "nunique": 9,
+          "missing_pct": 0.0,
+          "top_value_pct": 99.13,
+          "variance": 0.136,
+          "cv": 16.7172,
+          "flags": [
+            "NEAR_CONSTANT"
+          ]
+        },
+        {
+          "feature": "type_of_meal_plan_Meal Plan 2",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 91.24,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "type_of_meal_plan_Not Selected",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 85.28,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "room_type_reserved_Room_Type 2",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 98.15,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "room_type_reserved_Room_Type 4",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 83.39,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "room_type_reserved_Room_Type 6",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 98.73,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "market_segment_type_Corporate",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 94.21,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "market_segment_type_Offline",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 69.82,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "market_segment_type_Online",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 63.62,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        },
+        {
+          "feature": "booking_status_Not_Canceled",
+          "dtype": "bool",
+          "nunique": 2,
+          "missing_pct": 0.0,
+          "top_value_pct": 66.84,
+          "variance": null,
+          "cv": null,
+          "flags": [
+            "BINARY"
+          ]
+        }
+      ],
+      "total_flagged": 17
+    }
+  }
+}
